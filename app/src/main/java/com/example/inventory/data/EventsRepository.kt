@@ -1,0 +1,30 @@
+package com.example.inventory.data
+
+import kotlinx.coroutines.flow.Flow
+
+interface EventsRepository {
+    /**
+     * Retrieve all the items from the the given data source.
+     */
+    fun getAllEventsStream(): Flow<List<Event>>
+
+    /**
+     * Retrieve an item from the given data source that matches with the [id].
+     */
+    fun getEventStream(id: Int): Flow<Event?>
+
+    /**
+     * Insert item in the data source
+     */
+    suspend fun insertEvent(event: Event)
+
+    /**
+     * Delete item from the data source
+     */
+    suspend fun deleteEvent(event: Event)
+
+    /**
+     * Update item in the data source
+     */
+    suspend fun updateEvent(event: Event)
+}
