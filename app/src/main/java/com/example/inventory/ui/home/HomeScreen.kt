@@ -17,6 +17,7 @@
 package com.example.inventory.ui.home
 
 import android.icu.util.Calendar
+import android.provider.CalendarContract.Events
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -59,6 +60,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.inventory.InventoryTopAppBar
 import com.example.inventory.R
 import com.example.inventory.data.Event
+import com.example.inventory.data.EventAndCodes
 import com.example.inventory.ui.AppViewModelProvider
 import com.example.inventory.ui.event.formatedDate
 import com.example.inventory.ui.navigation.NavigationDestination
@@ -120,7 +122,7 @@ fun HomeScreen(
 
 @Composable
 private fun HomeBody(
-    eventList: List<Event>,
+    eventList: List<EventAndCodes>,
     onEventClick: (Int) -> Unit,
     modifier: Modifier = Modifier,
     contentPadding: PaddingValues = PaddingValues(0.dp),
@@ -139,7 +141,7 @@ private fun HomeBody(
         } else {
             InventoryList(
                 eventList = eventList,
-                onEventClick = { onEventClick(it.id) },
+                onEventClick = { onEventClick(it.event.id) },
                 contentPadding = contentPadding,
                 modifier = Modifier.padding(horizontal = dimensionResource(id = R.dimen.padding_small))
             )
@@ -149,8 +151,8 @@ private fun HomeBody(
 
 @Composable
 private fun InventoryList(
-    eventList: List<Event>,
-    onEventClick: (Event) -> Unit,
+    eventList: List<EventAndCodes>,
+    onEventClick: (EventAndCodes) -> Unit,
     contentPadding: PaddingValues,
     modifier: Modifier = Modifier
 ) {
@@ -158,7 +160,7 @@ private fun InventoryList(
         modifier = modifier,
         contentPadding = contentPadding
     ) {
-        items(items = eventList, key = { it.id }) { event ->
+        items(items = eventList, key = { it.event.id }) { event ->
             InventoryEvent(event = event,
                 modifier = Modifier
                     .padding(dimensionResource(id = R.dimen.padding_small))
@@ -169,7 +171,7 @@ private fun InventoryList(
 
 @Composable
 private fun InventoryEvent(
-    event: Event, modifier: Modifier = Modifier
+    event: EventAndCodes, modifier: Modifier = Modifier
 ) {
     Card(
         modifier = modifier, elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
@@ -182,12 +184,17 @@ private fun InventoryEvent(
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Text(
-                    text = event.name,
+                    text = event.event.name,
                     style = MaterialTheme.typography.titleLarge,
                 )
                 Spacer(Modifier.weight(1f))
                 Text(
-                    text = event.date.toString(),
+                    text = event.event.date.toString(),
+                    style = MaterialTheme.typography.titleMedium
+                )
+                Spacer(Modifier.weight(1f))
+                Text(
+                    text = event.code.count().toString(),
                     style = MaterialTheme.typography.titleMedium
                 )
             }
@@ -200,7 +207,9 @@ private fun InventoryEvent(
 fun HomeBodyPreview() {
     InventoryTheme {
         HomeBody(listOf(
-            Event(1, "Game", Calendar.getInstance().time), Event(2, "Pen", Calendar.getInstance().time), Event(3, "TV", Calendar.getInstance().time)
+            EventAndCodes(),
+            EventAndCodes(),
+            //EventsAndCodes(3, "TV", Calendar.getInstance().time)
         ), onEventClick = {})
     }
 }
@@ -218,7 +227,8 @@ fun HomeBodyEmptyListPreview() {
 fun InventoryEventPreview() {
     InventoryTheme {
         InventoryEvent(
-            Event(1, "Game", Calendar.getInstance().time),
+            //Event(1, "Game", Calendar.getInstance().time),
+            EventAndCodes()
         )
     }
 }

@@ -172,6 +172,19 @@ fun EventInputForm(
             enabled = enabled,
             singleLine = true
         )
+        OutlinedTextField(
+            value = eventDetails.code,
+            onValueChange = { onValueChange(eventDetails.copy(code = it)) },
+            label = { Text(stringResource(R.string.codes)) },
+            colors = OutlinedTextFieldDefaults.colors(
+                focusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
+                unfocusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
+                disabledContainerColor = MaterialTheme.colorScheme.secondaryContainer,
+            ),
+            modifier = Modifier.fillMaxWidth(),
+            enabled = enabled,
+            singleLine = true
+        )
 
         if (enabled) {
             Text(
@@ -188,7 +201,7 @@ private fun EventEntryScreenPreview() {
     InventoryTheme {
         EventEntryBody(eventUiState = EventUiState(
             EventDetails(
-                id = 0,name = "name", date = Date()
+                id = 0,name = "name", date = Date(), code = ""
             )
         ), onEventValueChange = {}, onSaveClick = {})
     }

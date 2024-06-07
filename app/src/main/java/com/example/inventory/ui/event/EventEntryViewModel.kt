@@ -20,7 +20,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import com.example.inventory.data.Code
+import com.example.inventory.data.CodesRepository
 import com.example.inventory.data.Event
+import com.example.inventory.data.EventAndCodes
 import com.example.inventory.data.EventsRepository
 import java.text.NumberFormat
 import java.util.Date
@@ -28,7 +31,10 @@ import java.util.Date
 /**
  * ViewModel to validate and insert events in the Room database.
  */
-class EventEntryViewModel(private val eventsRepository: EventsRepository) : ViewModel() {
+class EventEntryViewModel(
+    private val eventsRepository: EventsRepository,
+    private val codesRepository: CodesRepository
+) : ViewModel() {
 
     /**
      * Holds current event ui state
@@ -51,6 +57,12 @@ class EventEntryViewModel(private val eventsRepository: EventsRepository) : View
     suspend fun saveEvent() {
         if (validateInput()) {
             eventsRepository.insertEvent(eventUiState.eventDetails.toEvent())
+            val codes = eventUiState.eventDetails.code.split(",")
+            val id = eventUiState.eventDetails.id
+            for(c in codes){
+                val code = Code(eventId = id,code = c)
+                codesRepository.insertCode(code)
+            }
         }
     }
 
@@ -65,14 +77,15 @@ class EventEntryViewModel(private val eventsRepository: EventsRepository) : View
  * Represents Ui State for an Event.
  */
 data class EventUiState(
-    val eventDetails: EventDetails = EventDetails(id = 1,name= "name",date = Date()),
+    val eventDetails: EventDetails = EventDetails(id = 1,name= "name",date = Date(),code = ""),
     val isEntryValid: Boolean = false
 )
 
 data class EventDetails(
     val id: Int = 0,
     val name: String = "",
-    val date: Date
+    val date: Date,
+    val code: String = ""
 )
 
 /**
@@ -86,6 +99,14 @@ fun EventDetails.toEvent(): Event = Event(
     date = date
 )
 
+fun EventDetails.toCodes(): Code = Code(
+    eventId = id,
+    code = code
+)
+
+fun EventDetails.toEventAndCodes(): EventAndCodes = EventAndCodes(
+
+)
 fun Event.formatedDate(): String {
     return NumberFormat.getCurrencyInstance().format(date)
 }

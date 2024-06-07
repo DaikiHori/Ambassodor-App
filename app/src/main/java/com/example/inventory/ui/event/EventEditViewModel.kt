@@ -48,7 +48,7 @@ class EventEditViewModel(
             eventUiState = eventsRepository.getEventStream(eventId)
                 .filterNotNull()
                 .first()
-                .toEventUiState(true)
+                .event.toEventUiState(true)
         }
     }
 

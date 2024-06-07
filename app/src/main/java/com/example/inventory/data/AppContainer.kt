@@ -23,10 +23,11 @@ import android.content.Context
  */
 interface AppContainer {
     val eventsRepository: EventsRepository
+    val codesRepository: CodesRepository
 }
 
 /**
- * [AppContainer] implementation that provides instance of [OfflineItemsRepository]
+ * [AppContainer] implementation that provides instance of [OfflineEventsRepository]
  */
 class AppDataContainer(private val context: Context) : AppContainer {
     /**
@@ -34,5 +35,9 @@ class AppDataContainer(private val context: Context) : AppContainer {
      */
     override val eventsRepository: EventsRepository by lazy {
         OfflineEventsRepository(InventoryDatabase.getDatabase(context).eventDao())
+    }
+
+    override val codesRepository: CodesRepository by lazy {
+        OfflineCodesRepository(InventoryDatabase.getDatabase(context).codeDao())
     }
 }

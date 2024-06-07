@@ -46,7 +46,7 @@ class EventDetailsViewModel(
         eventsRepository.getEventStream(eventId)
             .filterNotNull()
             .map {
-                EventDetailsUiState(outOfStock = it.name != "", eventDetails = it.toEventDetails())
+                EventDetailsUiState(outOfStock = it.event.name != "", eventDetails = it.event.toEventDetails())
             }.stateIn(
                 scope = viewModelScope,
                 started = SharingStarted.WhileSubscribed(TIMEOUT_MILLIS),
@@ -71,5 +71,5 @@ class EventDetailsViewModel(
  */
 data class EventDetailsUiState(
     val outOfStock: Boolean = true,
-    val eventDetails: EventDetails = EventDetails(id = 0, name = "name", date = Date())
+    val eventDetails: EventDetails = EventDetails(id = 0, name = "", date = Date(),code = "")
 )

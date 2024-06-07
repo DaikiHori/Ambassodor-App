@@ -16,7 +16,7 @@ interface CodesRepository {
     /**
      * Insert item in the data source
      */
-    suspend fun insertCode(code: Code)
+    suspend fun insertCode(codes: Code)
 
     /**
      * Delete item from the data source

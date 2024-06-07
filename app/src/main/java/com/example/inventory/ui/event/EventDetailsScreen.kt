@@ -61,6 +61,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.inventory.InventoryTopAppBar
 import com.example.inventory.R
 import com.example.inventory.data.Event
+import com.example.inventory.data.EventAndCodes
 import com.example.inventory.ui.AppViewModelProvider
 import com.example.inventory.ui.navigation.NavigationDestination
 import com.example.inventory.ui.theme.InventoryTheme
@@ -145,7 +146,7 @@ private fun EventDetailsBody(
     ) {
         var deleteConfirmationRequired by rememberSaveable { mutableStateOf(false) }
         EventDetails(
-            event = eventDetailsUiState.eventDetails.toEvent(), modifier = Modifier.fillMaxWidth()
+            event = eventDetailsUiState.eventDetails.toEventAndCodes(), modifier = Modifier.fillMaxWidth()
         )
         OutlinedButton(
             onClick = { deleteConfirmationRequired = true },
@@ -170,7 +171,7 @@ private fun EventDetailsBody(
 
 @Composable
 fun EventDetails(
-    event: Event, modifier: Modifier = Modifier
+    event: EventAndCodes, modifier: Modifier = Modifier
 ) {
     Card(
         modifier = modifier, colors = CardDefaults.cardColors(
@@ -186,7 +187,7 @@ fun EventDetails(
         ) {
             EventDetailsRow(
                 labelResID = R.string.event,
-                eventDetail = event.name,
+                eventDetail = event.event.name,
                 modifier = Modifier.padding(
                     horizontal = dimensionResource(
                         id = R.dimen
@@ -195,8 +196,18 @@ fun EventDetails(
                 )
             )
             EventDetailsRow(
-                labelResID = R.string.quantity_in_stock,
-                eventDetail = event.date.toString(),
+                labelResID = R.string.event_date_req,
+                eventDetail = event.event.date.toString(),
+                modifier = Modifier.padding(
+                    horizontal = dimensionResource(
+                        id = R.dimen
+                            .padding_medium
+                    )
+                )
+            )
+            EventDetailsRow(
+                labelResID = R.string.codes_count,
+                eventDetail = event.code.count().toString(),
                 modifier = Modifier.padding(
                     horizontal = dimensionResource(
                         id = R.dimen

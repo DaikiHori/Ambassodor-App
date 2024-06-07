@@ -19,6 +19,7 @@ package com.example.inventory.ui.home
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.inventory.data.Event
+import com.example.inventory.data.EventAndCodes
 import com.example.inventory.data.EventsRepository
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -31,7 +32,7 @@ import kotlinx.coroutines.flow.stateIn
 class HomeViewModel(eventsRepository: EventsRepository) : ViewModel() {
 
     /**
-     * Holds home ui state. The list of items are retrieved from [ItemsRepository] and mapped to
+     * Holds home ui state. The list of items are retrieved from [EventsRepository] and mapped to
      * [HomeUiState]
      */
     val homeUiState: StateFlow<HomeUiState> =
@@ -50,4 +51,4 @@ class HomeViewModel(eventsRepository: EventsRepository) : ViewModel() {
 /**
  * Ui State for HomeScreen
  */
-data class HomeUiState(val eventList: List<Event> = listOf())
+data class HomeUiState(val eventList: List<EventAndCodes> = listOf())

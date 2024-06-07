@@ -42,7 +42,10 @@ object AppViewModelProvider {
         }
         // Initializer for EventEntryViewModel
         initializer {
-            EventEntryViewModel(inventoryApplication().container.eventsRepository)
+            EventEntryViewModel(
+                inventoryApplication().container.eventsRepository,
+                inventoryApplication().container.codesRepository
+            )
         }
 
         // Initializer for EventDetailsViewModel
