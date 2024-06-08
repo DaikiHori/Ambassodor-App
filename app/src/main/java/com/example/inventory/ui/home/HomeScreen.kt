@@ -79,7 +79,6 @@ object HomeDestination : NavigationDestination {
 @Composable
 fun HomeScreen(
     navigateToEventEntry: () -> Unit,
-    navigateToEventUpdate: (Int) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = viewModel(factory = AppViewModelProvider.Factory)
 ) {
@@ -114,7 +113,6 @@ fun HomeScreen(
     ) { innerPadding ->
         HomeBody(
             eventList = homeUiState.eventList,
-            onEventClick = navigateToEventUpdate,
             modifier = modifier.fillMaxSize(),
             contentPadding = innerPadding,
         )
@@ -124,7 +122,6 @@ fun HomeScreen(
 @Composable
 private fun HomeBody(
     eventList: List<EventAndCodes>,
-    onEventClick: (Int) -> Unit,
     modifier: Modifier = Modifier,
     contentPadding: PaddingValues = PaddingValues(0.dp),
 ) {
@@ -142,7 +139,6 @@ private fun HomeBody(
         } else {
             InventoryList(
                 eventList = eventList,
-                onEventClick = { onEventClick(it.event.id) },
                 contentPadding = contentPadding,
                 modifier = Modifier.padding(horizontal = dimensionResource(id = R.dimen.padding_small))
             )
@@ -153,7 +149,6 @@ private fun HomeBody(
 @Composable
 private fun InventoryList(
     eventList: List<EventAndCodes>,
-    onEventClick: (EventAndCodes) -> Unit,
     contentPadding: PaddingValues,
     modifier: Modifier = Modifier
 ) {
@@ -165,7 +160,7 @@ private fun InventoryList(
             InventoryEvent(event = event,
                 modifier = Modifier
                     .padding(dimensionResource(id = R.dimen.padding_small))
-                    .clickable { onEventClick(event) })
+            )
         }
     }
 }
@@ -203,37 +198,5 @@ private fun InventoryEvent(
                 )
             }
         }
-    }
-}
-
-
-@Preview(showBackground = true)
-@Composable
-fun HomeBodyPreview() {
-    InventoryTheme {
-        HomeBody(listOf(
-            EventAndCodes(),
-            EventAndCodes(),
-            //EventsAndCodes(3, "TV", Calendar.getInstance().time)
-        ), onEventClick = {})
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun HomeBodyEmptyListPreview() {
-    InventoryTheme {
-        HomeBody(listOf(), onEventClick = {})
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun InventoryEventPreview() {
-    InventoryTheme {
-        InventoryEvent(
-            //Event(1, "Game", Calendar.getInstance().time),
-            EventAndCodes()
-        )
     }
 }
