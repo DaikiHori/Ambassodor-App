@@ -56,12 +56,16 @@ class EventEntryViewModel(
      */
     suspend fun saveEvent() {
         if (validateInput()) {
-            eventsRepository.insertEvent(eventUiState.eventDetails.toEvent())
-            val codes = eventUiState.eventDetails.code.split(",")
-            val id = eventUiState.eventDetails.id
-            for(c in codes){
-                val code = Code(eventId = id,code = c)
-                codesRepository.insertCode(code)
+            try {
+                val eventId = eventsRepository.insertEvent(eventUiState.eventDetails.toEvent())
+                val codes = eventUiState.eventDetails.code.split(",")
+                val id = eventId.toInt()
+                for (c in codes) {
+                    val code = Code(eventId = id, code = c)
+                    codesRepository.insertCode(code)
+                }
+            }catch (e: Throwable){
+                throw e
             }
         }
     }
@@ -94,7 +98,6 @@ data class EventDetails(
  * [EventUiState] is not a valid [Int], then the quantity will be set to 0
  */
 fun EventDetails.toEvent(): Event = Event(
-    id = id,
     name = name,
     date = date
 )

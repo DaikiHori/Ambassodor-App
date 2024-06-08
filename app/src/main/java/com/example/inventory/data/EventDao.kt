@@ -24,7 +24,7 @@ interface EventDao {
     // Specify the conflict strategy as IGNORE, when the user tries to add an
     // existing Item into the database Room ignores the conflict.
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insert(event: Event)
+    suspend fun insert(event: Event): Long
 
     @Update
     suspend fun update(event: Event)

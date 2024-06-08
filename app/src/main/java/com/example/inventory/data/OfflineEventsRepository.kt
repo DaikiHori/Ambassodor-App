@@ -7,7 +7,7 @@ class OfflineEventsRepository(private val eventDao: EventDao) : EventsRepository
 
     override fun getEventStream(id: Int): Flow<EventAndCodes?> = eventDao.getEvent(id)
 
-    override suspend fun insertEvent(event: Event) = eventDao.insert(event)
+    override suspend fun insertEvent(event: Event): Long = eventDao.insert(event)
 
     override suspend fun deleteEvent(event: Event) = eventDao.delete(event)
 

@@ -1,7 +1,6 @@
 package com.example.inventory.data
 
 import kotlinx.coroutines.flow.Flow
-
 interface EventsRepository {
     /**
      * Retrieve all the items from the the given data source.
@@ -16,7 +15,7 @@ interface EventsRepository {
     /**
      * Insert item in the data source
      */
-    suspend fun insertEvent(event: Event)
+    suspend fun insertEvent(event: Event): Long
 
     /**
      * Delete item from the data source
