@@ -65,6 +65,7 @@ import com.example.inventory.ui.AppViewModelProvider
 import com.example.inventory.ui.event.formatedDate
 import com.example.inventory.ui.navigation.NavigationDestination
 import com.example.inventory.ui.theme.InventoryTheme
+import java.text.SimpleDateFormat
 
 object HomeDestination : NavigationDestination {
     override val route = "home"
@@ -176,6 +177,7 @@ private fun InventoryEvent(
     Card(
         modifier = modifier, elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
+        val sdf = SimpleDateFormat("yyyy/MM/dd")
         Column(
             modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_large)),
             verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_small))
@@ -183,15 +185,17 @@ private fun InventoryEvent(
             Row(
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Text(
-                    text = event.event.name,
-                    style = MaterialTheme.typography.titleLarge,
-                )
-                Spacer(Modifier.weight(1f))
-                Text(
-                    text = event.event.date.toString(),
-                    style = MaterialTheme.typography.titleMedium
-                )
+                Column {
+                    Text(
+                        text = event.event.name,
+                        style = MaterialTheme.typography.titleLarge,
+                    )
+                    Spacer(Modifier.weight(1f))
+                    Text(
+                        text = sdf.format(event.event.date),
+                        style = MaterialTheme.typography.titleMedium
+                    )
+                }
                 Spacer(Modifier.weight(1f))
                 Text(
                     text = event.code.count().toString(),
@@ -201,6 +205,7 @@ private fun InventoryEvent(
         }
     }
 }
+
 
 @Preview(showBackground = true)
 @Composable
