@@ -35,9 +35,7 @@ class EventDetailsViewModel(
     savedStateHandle: SavedStateHandle,
     private val eventsRepository: EventsRepository,
 ) : ViewModel() {
-
     private val eventId: Int = checkNotNull(savedStateHandle[EventDetailsDestination.eventIdArg])
-
     /**
      * Holds the event details ui state. The data is retrieved from [EventsRepository] and mapped to
      * the UI state.

@@ -1,24 +1,5 @@
-/*
- * Copyright (C) 2023 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     https://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.example.inventory.ui.home
 
-import android.icu.util.Calendar
-import android.provider.CalendarContract.Events
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -55,17 +36,13 @@ import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.inventory.InventoryTopAppBar
 import com.example.inventory.R
-import com.example.inventory.data.Event
 import com.example.inventory.data.EventAndCodes
 import com.example.inventory.ui.AppViewModelProvider
-import com.example.inventory.ui.event.formatedDate
 import com.example.inventory.ui.navigation.NavigationDestination
-import com.example.inventory.ui.theme.InventoryTheme
 import java.text.SimpleDateFormat
 
 object HomeDestination : NavigationDestination {
@@ -80,6 +57,7 @@ object HomeDestination : NavigationDestination {
 @Composable
 fun HomeScreen(
     navigateToEventEntry: () -> Unit,
+    navigateToCodes: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = viewModel(factory = AppViewModelProvider.Factory)
 ) {
@@ -114,6 +92,7 @@ fun HomeScreen(
     ) { innerPadding ->
         HomeBody(
             eventList = homeUiState.eventList,
+            navigateToCodes= navigateToCodes,
             modifier = modifier.fillMaxSize(),
             contentPadding = innerPadding,
         )
@@ -123,6 +102,7 @@ fun HomeScreen(
 @Composable
 private fun HomeBody(
     eventList: List<EventAndCodes>,
+    navigateToCodes: () -> Unit,
     modifier: Modifier = Modifier,
     contentPadding: PaddingValues = PaddingValues(0.dp),
 ) {
@@ -140,6 +120,7 @@ private fun HomeBody(
         } else {
             InventoryList(
                 eventList = eventList,
+                navigateToCodes = navigateToCodes,
                 contentPadding = contentPadding,
                 modifier = Modifier.padding(horizontal = dimensionResource(id = R.dimen.padding_small))
             )
@@ -150,6 +131,7 @@ private fun HomeBody(
 @Composable
 private fun InventoryList(
     eventList: List<EventAndCodes>,
+    navigateToCodes: () -> Unit,
     contentPadding: PaddingValues,
     modifier: Modifier = Modifier
 ) {
@@ -159,6 +141,7 @@ private fun InventoryList(
     ) {
         items(items = eventList, key = { it.event.id }) { event ->
             InventoryEvent(event = event,
+                navigateToCodes = navigateToCodes,
                 modifier = Modifier
                     .padding(dimensionResource(id = R.dimen.padding_small))
             )
@@ -168,7 +151,9 @@ private fun InventoryList(
 
 @Composable
 private fun InventoryEvent(
-    event: EventAndCodes, modifier: Modifier = Modifier
+    event: EventAndCodes,
+    navigateToCodes: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     Card(
         modifier = modifier, elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
@@ -178,6 +163,11 @@ private fun InventoryEvent(
             modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_large)),
             verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_small))
         ) {
+            /*
+todo delete button
+var deleteConfirmationRequired by rememberSaveable { mutableStateOf(false) }
+val coroutineScope = rememberCoroutineScope()
+*/
             Row(
                 modifier = Modifier.fillMaxWidth()
             ) {
@@ -198,20 +188,65 @@ private fun InventoryEvent(
                     style = MaterialTheme.typography.titleMedium
                 )
                 Spacer(Modifier.weight(1f))
+                /*
+                todo delete button
                 Button(
-                    onClick = {  },
-                    shape = MaterialTheme.shapes.small
+                onClick = {
+                deleteConfirmationRequired = true
+                },
+                shape = MaterialTheme.shapes.small
                 ) {
-                    Text(text = "delete")
+                Text(text = "delete")
                 }
+                */
                 Spacer(Modifier.weight(1f))
                 Button(
-                    onClick = {  },
+                    onClick = navigateToCodes,
                     shape = MaterialTheme.shapes.small
                 ) {
                     Text(text = "codes")
                 }
             }
+            /*
+            todo delete button click event
+            if (deleteConfirmationRequired) {
+            DeleteConfirmationDialog(
+            onDeleteConfirm = {
+            deleteConfirmationRequired = false
+            coroutineScope.launch {
+            //viewModel.deleteEvent()
+            event.event.id
+            }
+            },
+            onDeleteCancel = { deleteConfirmationRequired = false },
+            modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_medium))
+            )
+            }
+            */
+
         }
     }
 }
+/*
+todo delete button
+@Composable
+private fun DeleteConfirmationDialog(
+onDeleteConfirm: () -> Unit, onDeleteCancel: () -> Unit, modifier: Modifier = Modifier
+) {
+AlertDialog(onDismissRequest = { / * Do nothing * / },
+title = { Text(stringResource(R.string.attention)) },
+text = { Text(stringResource(R.string.delete_question)) },
+modifier = modifier,
+dismissButton = {
+TextButton(onClick = onDeleteCancel) {
+Text(text = stringResource(R.string.no))
+}
+},
+confirmButton = {
+TextButton(onClick = onDeleteConfirm) {
+Text(text = stringResource(R.string.yes))
+}
+}
+)
+}
+*/

@@ -98,6 +98,7 @@ data class EventDetails(
  * [EventUiState] is not a valid [Int], then the quantity will be set to 0
  */
 fun EventDetails.toEvent(): Event = Event(
+    //id = id,
     name = name,
     date = date
 )

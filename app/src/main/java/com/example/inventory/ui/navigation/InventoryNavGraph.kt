@@ -23,6 +23,8 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import com.example.inventory.ui.codes.CodesDestination
+import com.example.inventory.ui.codes.CodesScreen
 import com.example.inventory.ui.home.HomeDestination
 import com.example.inventory.ui.home.HomeScreen
 import com.example.inventory.ui.event.EventDetailsDestination
@@ -47,7 +49,8 @@ fun InventoryNavHost(
     ) {
         composable(route = HomeDestination.route) {
             HomeScreen(
-                navigateToEventEntry = { navController.navigate(EventEntryDestination.route) }
+                navigateToEventEntry = { navController.navigate(EventEntryDestination.route) },
+                navigateToCodes = { navController.navigate(CodesDestination.route) }
             )
         }
         composable(route = EventEntryDestination.route) {
@@ -63,6 +66,7 @@ fun InventoryNavHost(
             })
         ) {
             EventDetailsScreen(
+                navigateToCodes = { navController.navigate("${CodesDestination.route}/$it") },
                 navigateToEditEvent = { navController.navigate("${EventEditDestination.route}/$it") },
                 navigateBack = { navController.navigateUp() }
             )
@@ -74,6 +78,17 @@ fun InventoryNavHost(
             })
         ) {
             EventEditScreen(
+                navigateBack = { navController.popBackStack() },
+                onNavigateUp = { navController.navigateUp() }
+            )
+        }
+        composable(
+            route = CodesDestination.routeWithArgs,
+            arguments = listOf(navArgument(CodesDestination.eventIdArg) {
+                type = NavType.IntType
+            })
+        ) {
+            CodesScreen(
                 navigateBack = { navController.popBackStack() },
                 onNavigateUp = { navController.navigateUp() }
             )

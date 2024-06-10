@@ -36,4 +36,6 @@
     <string name="yes">Yes</string>
     <string name="required_fields">*required fields</string>
     <string name="date_pattern">yyyy/MM/dd</string>
+
+    <string name="code_viewer">Code Viewer</string>
 </resources>
