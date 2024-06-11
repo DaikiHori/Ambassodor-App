@@ -68,10 +68,16 @@ import com.example.inventory.ui.event.EventEditDestination
 import com.example.inventory.ui.home.HomeDestination
 import com.example.inventory.ui.home.HomeViewModel
 import com.example.inventory.ui.navigation.NavigationDestination
+import androidx.compose.foundation.Image
+import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.platform.LocalInspectionMode
+import coil.compose.AsyncImage
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.EncodeHintType
 import com.google.zxing.MultiFormatWriter
+import com.google.zxing.WriterException
 import com.google.zxing.common.BitMatrix
+import com.google.zxing.oned.CodaBarWriter
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel
 import com.journeyapps.barcodescanner.BarcodeEncoder
 
@@ -161,7 +167,6 @@ private fun CodesCode(
     code: EventAndCodes,
     modifier: Modifier
 ){
-
     Card(
         modifier = modifier,
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
@@ -169,6 +174,14 @@ private fun CodesCode(
         Column {
             Text(code.event.name)
             Spacer(Modifier.weight(1f))
+            AsyncImage(
+                model = if (LocalInspectionMode.current) {
+                    "https://example.com/image.jpg"
+                } else {
+                    qrCode(stringResource(R.string.url) + code.event.name)
+                },
+                contentDescription = null,
+            )
             //ImageView(qrCode(stringResource(R.string.url) + code.event.name),"QR")
             //qrCode(stringResource(R.string.url) + code.event.name)
             Spacer(Modifier.weight(1f))
