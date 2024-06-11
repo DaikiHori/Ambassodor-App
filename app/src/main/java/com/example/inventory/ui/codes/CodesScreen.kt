@@ -1,6 +1,11 @@
 package com.example.inventory.ui.codes
 
+import android.graphics.Bitmap
+import android.graphics.Bitmap.createBitmap
+import android.util.Log
+import android.widget.ImageView
 import androidx.annotation.StringRes
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -45,6 +50,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
@@ -62,6 +68,12 @@ import com.example.inventory.ui.event.EventEditDestination
 import com.example.inventory.ui.home.HomeDestination
 import com.example.inventory.ui.home.HomeViewModel
 import com.example.inventory.ui.navigation.NavigationDestination
+import com.google.zxing.BarcodeFormat
+import com.google.zxing.EncodeHintType
+import com.google.zxing.MultiFormatWriter
+import com.google.zxing.common.BitMatrix
+import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel
+import com.journeyapps.barcodescanner.BarcodeEncoder
 
 object CodesDestination : NavigationDestination {
     override val route = "codes"
@@ -150,4 +162,46 @@ private fun CodesCode(
     modifier: Modifier
 ){
 
+    Card(
+        modifier = modifier,
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+    ){
+        Column {
+            Text(code.event.name)
+            Spacer(Modifier.weight(1f))
+            //ImageView(qrCode(stringResource(R.string.url) + code.event.name),"QR")
+            qrCode(stringResource(R.string.url) + code.event.name)
+            Spacer(Modifier.weight(1f))
+            Text(code.event.date.toString())
+        }
+    }
+}
+
+fun qrCode(data: String): Bitmap? {
+    val bitMatrix = createBitMatrix(data)
+    return try {
+        bitMatrix?.let { createBitmap(it) }
+    }catch (e: Exception){
+        e.message?.let { Log.d("bitmap_error", data) }
+        null
+    }
+}
+
+fun createBitMatrix(data: String): BitMatrix? {
+    val multiFormatWriter = MultiFormatWriter()
+    val hints = mapOf(
+        EncodeHintType.MARGIN to 0,
+        EncodeHintType.ERROR_CORRECTION to ErrorCorrectionLevel.L
+    )
+    return multiFormatWriter.encode(
+        data,
+        BarcodeFormat.QR_CODE,
+        200,
+        200,
+        hints
+    )
+}
+fun createBitmap(bitMatrix: BitMatrix): Bitmap {
+    val barcodeEncoder = BarcodeEncoder()
+    return barcodeEncoder.createBitmap(bitMatrix)
 }
