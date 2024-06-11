@@ -188,7 +188,7 @@ fun EventDetails(
             )
             EventDetailsRow(
                 labelResID = R.string.codes_count,
-                eventDetail = event.code.count().toString(),
+                eventDetail = event.codes.count().toString(),
                 modifier = Modifier.padding(
                     horizontal = dimensionResource(
                         id = R.dimen

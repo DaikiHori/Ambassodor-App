@@ -185,7 +185,7 @@ val coroutineScope = rememberCoroutineScope()
                 }
                 Spacer(Modifier.weight(1f))
                 Text(
-                    text = event.code.count().toString(),
+                    text = event.codes.count().toString(),
                     style = MaterialTheme.typography.titleMedium
                 )
                 Spacer(Modifier.weight(1f))

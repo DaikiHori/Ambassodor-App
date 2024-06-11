@@ -24,5 +24,8 @@ data class Code(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
     val eventId: Int,
-    val code: String
+    val code: String,
+    val usable: Boolean = true,
+    val used: Boolean = false,
+    val userName: String = ""
 )
