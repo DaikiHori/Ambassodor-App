@@ -170,7 +170,7 @@ private fun CodesCode(
             Text(code.event.name)
             Spacer(Modifier.weight(1f))
             //ImageView(qrCode(stringResource(R.string.url) + code.event.name),"QR")
-            qrCode(stringResource(R.string.url) + code.event.name)
+            //qrCode(stringResource(R.string.url) + code.event.name)
             Spacer(Modifier.weight(1f))
             Text(code.event.date.toString())
         }
