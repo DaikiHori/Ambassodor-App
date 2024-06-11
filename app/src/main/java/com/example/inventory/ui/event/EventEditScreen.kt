@@ -67,10 +67,6 @@ fun EventEditScreen(
             eventUiState = viewModel.eventUiState,
             onEventValueChange = viewModel::updateUiState,
             onSaveClick = {
-                // Note: If the user rotates the screen very fast, the operation may get cancelled
-                // and the event may not be updated in the Database. This is because when config
-                // change occurs, the Activity will be recreated and the rememberCoroutineScope will
-                // be cancelled - since the scope is bound to composition.
                 coroutineScope.launch {
                     viewModel.updateEvent()
                     navigateBack()
@@ -84,13 +80,5 @@ fun EventEditScreen(
                 )
                 .verticalScroll(rememberScrollState())
         )
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun EventEditScreenPreview() {
-    InventoryTheme {
-        EventEditScreen(navigateBack = { /*Do nothing*/ }, onNavigateUp = { /*Do nothing*/ })
     }
 }

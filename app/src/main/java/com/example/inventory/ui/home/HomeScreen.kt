@@ -57,7 +57,7 @@ object HomeDestination : NavigationDestination {
 @Composable
 fun HomeScreen(
     navigateToEventEntry: () -> Unit,
-    navigateToCodes: () -> Unit,
+    navigateToCodes:(Int) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = viewModel(factory = AppViewModelProvider.Factory)
 ) {
@@ -92,7 +92,7 @@ fun HomeScreen(
     ) { innerPadding ->
         HomeBody(
             eventList = homeUiState.eventList,
-            navigateToCodes= navigateToCodes,
+            navigateToCodes = navigateToCodes,
             modifier = modifier.fillMaxSize(),
             contentPadding = innerPadding,
         )
@@ -102,7 +102,7 @@ fun HomeScreen(
 @Composable
 private fun HomeBody(
     eventList: List<EventAndCodes>,
-    navigateToCodes: () -> Unit,
+    navigateToCodes: (Int) -> Unit,
     modifier: Modifier = Modifier,
     contentPadding: PaddingValues = PaddingValues(0.dp),
 ) {
@@ -120,7 +120,7 @@ private fun HomeBody(
         } else {
             InventoryList(
                 eventList = eventList,
-                navigateToCodes = navigateToCodes,
+                navigateToCodes = navigateToCodes ,
                 contentPadding = contentPadding,
                 modifier = Modifier.padding(horizontal = dimensionResource(id = R.dimen.padding_small))
             )
@@ -131,7 +131,7 @@ private fun HomeBody(
 @Composable
 private fun InventoryList(
     eventList: List<EventAndCodes>,
-    navigateToCodes: () -> Unit,
+    navigateToCodes: (Int) -> Unit,
     contentPadding: PaddingValues,
     modifier: Modifier = Modifier
 ) {
@@ -140,7 +140,8 @@ private fun InventoryList(
         contentPadding = contentPadding
     ) {
         items(items = eventList, key = { it.event.id }) { event ->
-            InventoryEvent(event = event,
+            InventoryEvent(
+                event = event,
                 navigateToCodes = navigateToCodes,
                 modifier = Modifier
                     .padding(dimensionResource(id = R.dimen.padding_small))
@@ -152,7 +153,7 @@ private fun InventoryList(
 @Composable
 private fun InventoryEvent(
     event: EventAndCodes,
-    navigateToCodes: () -> Unit,
+    navigateToCodes: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Card(
@@ -201,7 +202,7 @@ val coroutineScope = rememberCoroutineScope()
                 */
                 Spacer(Modifier.weight(1f))
                 Button(
-                    onClick = navigateToCodes,
+                    onClick = { navigateToCodes(event.event.id) },
                     shape = MaterialTheme.shapes.small
                 ) {
                     Text(text = "codes")

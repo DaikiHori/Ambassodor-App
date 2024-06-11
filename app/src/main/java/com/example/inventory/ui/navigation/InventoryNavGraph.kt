@@ -47,10 +47,15 @@ fun InventoryNavHost(
         startDestination = HomeDestination.route,
         modifier = modifier
     ) {
-        composable(route = HomeDestination.route) {
+        composable(
+            route = HomeDestination.route,
+            arguments = listOf(navArgument(CodesDestination.eventIdArg) {
+                type = NavType.IntType
+            })
+        ) {
             HomeScreen(
                 navigateToEventEntry = { navController.navigate(EventEntryDestination.route) },
-                navigateToCodes = { navController.navigate(CodesDestination.route) }
+                navigateToCodes = { navController.navigate("${CodesDestination.route}/$it")}
             )
         }
         composable(route = EventEntryDestination.route) {
@@ -66,7 +71,7 @@ fun InventoryNavHost(
             })
         ) {
             EventDetailsScreen(
-                navigateToCodes = { navController.navigate("${CodesDestination.route}/$it") },
+                navigateToCodes = { navController.navigate("${CodesDestination.routeWithArgs}/$it") },
                 navigateToEditEvent = { navController.navigate("${EventEditDestination.route}/$it") },
                 navigateBack = { navController.navigateUp() }
             )
