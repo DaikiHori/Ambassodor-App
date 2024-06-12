@@ -37,6 +37,7 @@ import com.example.inventory.ui.AppViewModelProvider
 import com.example.inventory.ui.navigation.NavigationDestination
 import com.example.inventory.ui.theme.InventoryTheme
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
 import java.time.Instant
 import java.time.Instant.now
 import java.util.Currency
@@ -121,6 +122,7 @@ fun EventInputForm(
     onValueChange: (EventDetails) -> Unit = {},
     enabled: Boolean = true
 ) {
+    val sdf = SimpleDateFormat(stringResource(R.string.date_pattern))
     Column(
         modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_medium))
@@ -139,7 +141,7 @@ fun EventInputForm(
             singleLine = true
         )
         OutlinedTextField(
-            value = eventDetails.date.toString(),
+            value = sdf.format(eventDetails.date),
             onValueChange = { onValueChange(eventDetails.copy(date = Date())) },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
             label = { Text(stringResource(R.string.event_date_req)) },
@@ -172,17 +174,5 @@ fun EventInputForm(
                 modifier = Modifier.padding(start = dimensionResource(id = R.dimen.padding_medium))
             )
         }
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-private fun EventEntryScreenPreview() {
-    InventoryTheme {
-        EventEntryBody(eventUiState = EventUiState(
-            EventDetails(
-                id = 0,name = "name", date = Date(), code = ""
-            )
-        ), onEventValueChange = {}, onSaveClick = {})
     }
 }

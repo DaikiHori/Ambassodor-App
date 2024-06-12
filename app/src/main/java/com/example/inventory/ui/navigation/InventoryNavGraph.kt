@@ -55,6 +55,7 @@ fun InventoryNavHost(
         ) {
             HomeScreen(
                 navigateToEventEntry = { navController.navigate(EventEntryDestination.route) },
+                navigateToEventEdit = { navController.navigate("${EventEditDestination.route}/$it")},
                 navigateToCodes = { navController.navigate("${CodesDestination.route}/$it")}
             )
         }
@@ -94,8 +95,9 @@ fun InventoryNavHost(
             })
         ) {
             CodesScreen(
-                navigateBack = { navController.popBackStack() },
-                onNavigateUp = { navController.navigateUp() }
+                navigateBack = { navController.popBackStack(HomeDestination.route,inclusive = false) },
+                onNavigateUp = { navController.popBackStack() },
+                onSaveEnd =  { navController.navigate("${CodesDestination.route}/$it")}
             )
         }
     }

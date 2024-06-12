@@ -58,11 +58,16 @@ class EventEntryViewModel(
         if (validateInput()) {
             try {
                 val eventId = eventsRepository.insertEvent(eventUiState.eventDetails.toEvent())
-                val codes = eventUiState.eventDetails.code.split(",")
+                val codes = eventUiState.eventDetails.code
+                    .replace("\"","")
+                    .replace("\r",",").replace("\n",",")
+                    .split(",")
                 val id = eventId.toInt()
                 for (c in codes) {
-                    val code = Code(eventId = id, code = c)
-                    codesRepository.insertCode(code)
+                    if(c.isNotEmpty()) {
+                        val code = Code(eventId = id, code = c)
+                        codesRepository.insertCode(code)
+                    }
                 }
             }catch (e: Throwable){
                 throw e
@@ -81,7 +86,7 @@ class EventEntryViewModel(
  * Represents Ui State for an Event.
  */
 data class EventUiState(
-    val eventDetails: EventDetails = EventDetails(id = 1,name= "name",date = Date(),code = ""),
+    val eventDetails: EventDetails = EventDetails(id = 0,name= "",date = Date(),code = ""),
     val isEntryValid: Boolean = false
 )
 

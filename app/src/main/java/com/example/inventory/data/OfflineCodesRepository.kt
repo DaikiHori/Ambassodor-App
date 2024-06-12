@@ -7,6 +7,7 @@ class OfflineCodesRepository(private val codeDao: CodeDao) : CodesRepository {
 
     override fun getCodeStream(id: Int): Flow<Code?> = codeDao.getCode(id)
 
+    override fun getFirstByEventIdStream(eventId: Int): Flow<Code?> = codeDao.getFirstByEventIdStream(eventId)
     override suspend fun insertCode(code: Code) = codeDao.insert(code)
 
     override suspend fun deleteCode(code: Code) = codeDao.delete(code)

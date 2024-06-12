@@ -14,12 +14,12 @@
   ~ limitations under the License.
   -->
 <resources>
-    <string name="app_name">Inventory</string>
+    <string name="app_name">Ambassador App</string>
     <string name="attention">Attention</string>
     <string name="back_button">Back</string>
     <string name="delete">Delete</string>
     <string name="delete_question">Are you sure you want to delete?</string>
-    <string name="no_event_description">No events in Inventory.\nTap + to add.</string>
+    <string name="no_event_description">No events in Database.\nTap + to add.</string>
     <string name="edit_event_title">Edit Event</string>
     <string name="event">Event</string>
     <string name="event_detail_title">Event Details</string>
@@ -39,4 +39,8 @@
 
     <string name="code_viewer">Code Viewer</string>
     <string name="url">https://store.pokemongolive.com/offer-redemption?passcode=</string>
+
+    <string name="user_name">User Name</string>
+    <string name="usable">Usable</string>
+    <string name="used">Used</string>
 </resources>

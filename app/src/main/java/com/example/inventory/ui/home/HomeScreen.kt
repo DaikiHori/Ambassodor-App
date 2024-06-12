@@ -1,5 +1,6 @@
 package com.example.inventory.ui.home
 
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -16,6 +17,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -25,10 +27,15 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
@@ -41,8 +48,12 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.inventory.InventoryTopAppBar
 import com.example.inventory.R
 import com.example.inventory.data.EventAndCodes
+import com.example.inventory.data.EventDao
+import com.example.inventory.data.EventsRepository
 import com.example.inventory.ui.AppViewModelProvider
+import com.example.inventory.ui.event.EventEditViewModel
 import com.example.inventory.ui.navigation.NavigationDestination
+import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 
 object HomeDestination : NavigationDestination {
@@ -57,13 +68,13 @@ object HomeDestination : NavigationDestination {
 @Composable
 fun HomeScreen(
     navigateToEventEntry: () -> Unit,
+    navigateToEventEdit: (Int) -> Unit,
     navigateToCodes:(Int) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = viewModel(factory = AppViewModelProvider.Factory)
 ) {
     val homeUiState by viewModel.homeUiState.collectAsState()
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
-
     Scaffold(
         modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
@@ -93,8 +104,9 @@ fun HomeScreen(
         HomeBody(
             eventList = homeUiState.eventList,
             navigateToCodes = navigateToCodes,
+            navigateToEventEdit = navigateToEventEdit,
             modifier = modifier.fillMaxSize(),
-            contentPadding = innerPadding,
+            contentPadding = innerPadding
         )
     }
 }
@@ -103,6 +115,7 @@ fun HomeScreen(
 private fun HomeBody(
     eventList: List<EventAndCodes>,
     navigateToCodes: (Int) -> Unit,
+    navigateToEventEdit: (Int) -> Unit,
     modifier: Modifier = Modifier,
     contentPadding: PaddingValues = PaddingValues(0.dp),
 ) {
@@ -121,6 +134,7 @@ private fun HomeBody(
             InventoryList(
                 eventList = eventList,
                 navigateToCodes = navigateToCodes ,
+                navigateToEventEdit = navigateToEventEdit,
                 contentPadding = contentPadding,
                 modifier = Modifier.padding(horizontal = dimensionResource(id = R.dimen.padding_small))
             )
@@ -132,6 +146,7 @@ private fun HomeBody(
 private fun InventoryList(
     eventList: List<EventAndCodes>,
     navigateToCodes: (Int) -> Unit,
+    navigateToEventEdit: (Int) -> Unit,
     contentPadding: PaddingValues,
     modifier: Modifier = Modifier
 ) {
@@ -143,8 +158,8 @@ private fun InventoryList(
             InventoryEvent(
                 event = event,
                 navigateToCodes = navigateToCodes,
-                modifier = Modifier
-                    .padding(dimensionResource(id = R.dimen.padding_small))
+                navigateToEventEdit = navigateToEventEdit,
+                modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_small))
             )
         }
     }
@@ -154,21 +169,19 @@ private fun InventoryList(
 private fun InventoryEvent(
     event: EventAndCodes,
     navigateToCodes: (Int) -> Unit,
+    navigateToEventEdit: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val sdf = SimpleDateFormat(stringResource(R.string.date_pattern))
     Card(
         modifier = modifier, elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
-        val sdf = SimpleDateFormat("yyyy/MM/dd")
         Column(
             modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_large)),
             verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_small))
         ) {
-            /*
-todo delete button
-var deleteConfirmationRequired by rememberSaveable { mutableStateOf(false) }
-val coroutineScope = rememberCoroutineScope()
-*/
+            var deleteConfirmationRequired by rememberSaveable { mutableStateOf(false) }
+            val coroutineScope = rememberCoroutineScope()
             Row(
                 modifier = Modifier.fillMaxWidth()
             ) {
@@ -189,18 +202,15 @@ val coroutineScope = rememberCoroutineScope()
                     style = MaterialTheme.typography.titleMedium
                 )
                 Spacer(Modifier.weight(1f))
-                /*
-                todo delete button
-                Button(
-                onClick = {
-                deleteConfirmationRequired = true
-                },
-                shape = MaterialTheme.shapes.small
-                ) {
-                Text(text = "delete")
-                }
-                */
-                Spacer(Modifier.weight(1f))
+//
+//                Button(
+//                    onClick = { navigateToEventEdit(event.event.id) },
+//                    shape = MaterialTheme.shapes.small
+//                ) {
+//                    Text(text = "edit")
+//                }
+//
+//                Spacer(Modifier.weight(1f))
                 Button(
                     onClick = { navigateToCodes(event.event.id) },
                     shape = MaterialTheme.shapes.small
@@ -208,46 +218,6 @@ val coroutineScope = rememberCoroutineScope()
                     Text(text = "codes")
                 }
             }
-            /*
-            todo delete button click event
-            if (deleteConfirmationRequired) {
-            DeleteConfirmationDialog(
-            onDeleteConfirm = {
-            deleteConfirmationRequired = false
-            coroutineScope.launch {
-            //viewModel.deleteEvent()
-            event.event.id
-            }
-            },
-            onDeleteCancel = { deleteConfirmationRequired = false },
-            modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_medium))
-            )
-            }
-            */
-
         }
     }
 }
-/*
-todo delete button
-@Composable
-private fun DeleteConfirmationDialog(
-onDeleteConfirm: () -> Unit, onDeleteCancel: () -> Unit, modifier: Modifier = Modifier
-) {
-AlertDialog(onDismissRequest = { / * Do nothing * / },
-title = { Text(stringResource(R.string.attention)) },
-text = { Text(stringResource(R.string.delete_question)) },
-modifier = modifier,
-dismissButton = {
-TextButton(onClick = onDeleteCancel) {
-Text(text = stringResource(R.string.no))
-}
-},
-confirmButton = {
-TextButton(onClick = onDeleteConfirm) {
-Text(text = stringResource(R.string.yes))
-}
-}
-)
-}
-*/
