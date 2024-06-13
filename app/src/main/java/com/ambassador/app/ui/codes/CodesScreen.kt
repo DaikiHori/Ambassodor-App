@@ -5,10 +5,13 @@ import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.calculateEndPadding
 import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -26,6 +29,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
@@ -57,6 +61,7 @@ fun CodesScreen(
     modifier: Modifier = Modifier,
     viewModel: CodesViewModel = viewModel(factory = AppViewModelProvider.Factory)
 ){
+
     val coroutineScope = rememberCoroutineScope()
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
     Scaffold(
@@ -106,7 +111,7 @@ private fun CodesBody(
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = modifier.padding(dimensionResource(id = R.dimen.padding_medium)),
+        modifier = modifier.padding(dimensionResource(id = R.dimen.padding_medium)).padding(10.dp),
     ) {
         CodeView(
             codesUiState = codesUiState,
@@ -133,10 +138,14 @@ private fun CodeView(
             AsyncImage(
                 model = qrCode(stringResource(R.string.url) + (codesUiState.codesDetails.code)),
                 contentDescription = null,
+                modifier = Modifier
+                    .padding(60.dp, 5.dp)
+                    .fillMaxWidth()
             )
         }else{
             //navigateBack()
         }
+        Spacer(modifier = Modifier.height(1.dp))
         Text(codesUiState.codesDetails.code)
         CodeEditForm(
             codesDetails = codesUiState.codesDetails,
@@ -164,16 +173,20 @@ fun CodeEditForm(
         modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_medium))
     ) {
-        Text(stringResource(R.string.usable))
-        Switch(checked = code.usable,
-            onCheckedChange = {
-                onValueChange(code.copy(usable = it))
-            })
-        Text(stringResource(R.string.used))
-        Switch(checked = code.used,
-            onCheckedChange = {
-                onValueChange(code.copy(used = it))
-            })
+        Row {
+            Text(stringResource(R.string.usable),modifier = Modifier.padding(10.dp))
+            Switch(checked = code.usable,
+                onCheckedChange = {
+                    onValueChange(code.copy(usable = it))
+                })
+        }
+        Row {
+            Text(stringResource(R.string.used),modifier = Modifier.padding(10.dp))
+            Switch(checked = code.used,
+                onCheckedChange = {
+                    onValueChange(code.copy(used = it))
+                })
+        }
         OutlinedTextField(
             value = code.userName,
             onValueChange = { onValueChange(code.copy(userName = it)) },

@@ -124,7 +124,7 @@ private fun HomeBody(
                 modifier = Modifier.padding(contentPadding),
             )
         } else {
-            InventoryList(
+            EventList(
                 eventList = eventList,
                 navigateToCodes = navigateToCodes ,
                 navigateToEventEdit = navigateToEventEdit,
@@ -136,7 +136,7 @@ private fun HomeBody(
 }
 
 @Composable
-private fun InventoryList(
+private fun EventList(
     eventList: List<EventAndCodes>,
     navigateToCodes: (Int) -> Unit,
     navigateToEventEdit: (Int) -> Unit,
@@ -148,7 +148,7 @@ private fun InventoryList(
         contentPadding = contentPadding
     ) {
         items(items = eventList, key = { it.event.id }) { event ->
-            InventoryEvent(
+            EventEntry(
                 event = event,
                 navigateToCodes = navigateToCodes,
                 navigateToEventEdit = navigateToEventEdit,
@@ -159,7 +159,7 @@ private fun InventoryList(
 }
 
 @Composable
-private fun InventoryEvent(
+private fun EventEntry(
     event: EventAndCodes,
     navigateToCodes: (Int) -> Unit,
     navigateToEventEdit: (Int) -> Unit,
@@ -195,15 +195,15 @@ private fun InventoryEvent(
                     style = MaterialTheme.typography.titleMedium
                 )
                 Spacer(Modifier.weight(1f))
-//
-//                Button(
-//                    onClick = { navigateToEventEdit(event.event.id) },
-//                    shape = MaterialTheme.shapes.small
-//                ) {
-//                    Text(text = "edit")
-//                }
-//
-//                Spacer(Modifier.weight(1f))
+
+                Button(
+                    onClick = { navigateToEventEdit(event.event.id) },
+                    shape = MaterialTheme.shapes.small
+                ) {
+                    Text(text = "edit")
+                }
+
+                Spacer(Modifier.weight(1f))
                 Button(
                     onClick = { navigateToCodes(event.event.id) },
                     shape = MaterialTheme.shapes.small
