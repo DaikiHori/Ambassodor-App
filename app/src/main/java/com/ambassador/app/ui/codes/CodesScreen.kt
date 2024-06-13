@@ -1,8 +1,11 @@
 package com.ambassador.app.ui.codes
 
+import android.app.Dialog
 import android.graphics.Bitmap
+import android.os.Bundle
 import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -13,6 +16,8 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -31,12 +36,14 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import com.ambassador.app.InventoryTopAppBar
 import com.ambassador.app.R
 import com.ambassador.app.ui.AppViewModelProvider
 import com.ambassador.app.ui.navigation.NavigationDestination
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.EncodeHintType
 import com.google.zxing.MultiFormatWriter
@@ -111,7 +118,9 @@ private fun CodesBody(
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = modifier.padding(dimensionResource(id = R.dimen.padding_medium)).padding(10.dp),
+        modifier = modifier
+            .padding(dimensionResource(id = R.dimen.padding_medium))
+            .padding(10.dp),
     ) {
         CodeView(
             codesUiState = codesUiState,
@@ -134,16 +143,21 @@ private fun CodeView(
 ){
 
     Column(modifier = Modifier.fillMaxHeight()) {
-        if(codesUiState.codesDetails.code.isNotEmpty()) {
-            AsyncImage(
-                model = qrCode(stringResource(R.string.url) + (codesUiState.codesDetails.code)),
-                contentDescription = null,
-                modifier = Modifier
-                    .padding(60.dp, 5.dp)
-                    .fillMaxWidth()
-            )
-        }else{
-            //navigateBack()
+        Box (
+            modifier = Modifier
+                .size(300.dp)
+                .align(Alignment.CenterHorizontally)
+        ){
+            if (codesUiState.codesDetails.code.isNotEmpty()) {
+                AsyncImage(
+                    model = qrCode(stringResource(R.string.url) + (codesUiState.codesDetails.code)),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                )
+            } else {
+                //navigateBack()
+            }
         }
         Spacer(modifier = Modifier.height(1.dp))
         Text(codesUiState.codesDetails.code)
