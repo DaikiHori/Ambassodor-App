@@ -97,11 +97,6 @@ data class EventDetails(
     val code: String = ""
 )
 
-/**
- * Extension function to convert [EventUiState] to [Event]. If the value of [EventDetails.price] is
- * not a valid [Double], then the price will be set to 0.0. Similarly if the value of
- * [EventUiState] is not a valid [Int], then the quantity will be set to 0
- */
 fun EventDetails.toEvent(): Event = Event(
     id = id,
     name = name,
