@@ -24,7 +24,7 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.ambassador.app.InventoryTopAppBar
+import com.ambassador.app.AmbassadorTopAppBar
 import com.ambassador.app.R
 import com.ambassador.app.ui.AppViewModelProvider
 import com.ambassador.app.ui.navigation.NavigationDestination
@@ -48,7 +48,7 @@ fun EventEntryScreen(
     val coroutineScope = rememberCoroutineScope()
     Scaffold(
         topBar = {
-            InventoryTopAppBar(
+            AmbassadorTopAppBar(
                 title = stringResource(EventEntryDestination.titleRes),
                 canNavigateBack = canNavigateBack,
                 navigateUp = onNavigateUp

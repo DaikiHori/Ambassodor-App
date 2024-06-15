@@ -42,7 +42,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.ambassador.app.InventoryTopAppBar
+import com.ambassador.app.AmbassadorTopAppBar
 import com.ambassador.app.R
 import com.ambassador.app.data.EventAndCodes
 import com.ambassador.app.ui.AppViewModelProvider
@@ -71,7 +71,7 @@ fun HomeScreen(
     Scaffold(
         modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
-            InventoryTopAppBar(
+            AmbassadorTopAppBar(
                 title = stringResource(HomeDestination.titleRes),
                 canNavigateBack = false,
                 scrollBehavior = scrollBehavior

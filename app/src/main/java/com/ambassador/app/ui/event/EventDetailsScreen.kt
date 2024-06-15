@@ -40,7 +40,7 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.ambassador.app.InventoryTopAppBar
+import com.ambassador.app.AmbassadorTopAppBar
 import com.ambassador.app.R
 import com.ambassador.app.data.EventAndCodes
 import com.ambassador.app.ui.AppViewModelProvider
@@ -67,7 +67,7 @@ fun EventDetailsScreen(
     val coroutineScope = rememberCoroutineScope()
     Scaffold(
         topBar = {
-            InventoryTopAppBar(
+            AmbassadorTopAppBar(
                 title = stringResource(EventDetailsDestination.titleRes),
                 canNavigateBack = true,
                 navigateUp = navigateBack

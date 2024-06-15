@@ -34,7 +34,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
-import com.ambassador.app.InventoryTopAppBar
+import com.ambassador.app.AmbassadorTopAppBar
 import com.ambassador.app.R
 import com.ambassador.app.ui.AppViewModelProvider
 import com.ambassador.app.ui.navigation.NavigationDestination
@@ -67,7 +67,7 @@ fun CodesScreen(
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
     Scaffold(
         topBar = {
-            InventoryTopAppBar(
+            AmbassadorTopAppBar(
                 title = stringResource(CodesDestination.titleRes),
                 canNavigateBack = true,
                 navigateUp = navigateBack
