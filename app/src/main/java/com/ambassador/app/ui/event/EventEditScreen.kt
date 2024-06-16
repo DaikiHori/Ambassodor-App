@@ -16,6 +16,7 @@
 
 package com.ambassador.app.ui.event
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -55,6 +56,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.ambassador.app.AmbassadorTopAppBar
 import com.ambassador.app.R
 import com.ambassador.app.ui.AppViewModelProvider
+import com.ambassador.app.ui.Utility
 import com.ambassador.app.ui.navigation.NavigationDestination
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
@@ -117,6 +119,7 @@ fun EventEditBody(
     onEventValueChange: (EventDetails) -> Unit,
     onSaveClick: () -> Unit,
     onDeleteClick: () -> Unit,
+    enabled: Boolean = true,
     modifier: Modifier = Modifier
 ) {
     var deleteConfirmationRequired by rememberSaveable { mutableStateOf(false) }
@@ -124,11 +127,50 @@ fun EventEditBody(
         modifier = modifier.padding(dimensionResource(id = R.dimen.padding_medium)),
         verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_large))
     ) {
-        EventEditForm(
-            eventDetails = eventUiState.eventDetails,
-            onValueChange = onEventValueChange,
-            modifier = Modifier.fillMaxWidth()
-        )
+        val eventDetails = eventUiState.eventDetails
+        val onValueChange = onEventValueChange
+        val modifier = Modifier.fillMaxWidth()
+        Column(
+            modifier = modifier,
+            verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_medium))
+        ) {
+            OutlinedTextField(
+                value = eventDetails.name,
+                onValueChange = { eventDetails.copy(name = it) },
+                label = { Text(stringResource(R.string.event_name_req)) },
+                colors = OutlinedTextFieldDefaults.colors(
+                    focusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
+                    unfocusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
+                    disabledContainerColor = MaterialTheme.colorScheme.secondaryContainer,
+                ),
+                modifier = Modifier.fillMaxWidth(),
+                enabled = enabled,
+                singleLine = true
+            )
+            OutlinedTextField(
+                value = Utility.dateToString(eventDetails.date),
+                onValueChange = { },//onValueChange(eventDetails.copy(date = Utility.stringToDate(it))) },
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
+                label = { Text(stringResource(R.string.event_date_req)) },
+                colors = OutlinedTextFieldDefaults.colors(
+                    focusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
+                    unfocusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
+                    disabledContainerColor = MaterialTheme.colorScheme.secondaryContainer,
+                ),
+                modifier = Modifier.fillMaxWidth()
+                    .clickable(onClick = {
+
+                    }),
+                enabled = false,
+                singleLine = true
+            )
+            if (enabled) {
+                Text(
+                    text = stringResource(R.string.required_fields),
+                    modifier = Modifier.padding(start = dimensionResource(id = R.dimen.padding_medium))
+                )
+            }
+        }
         Row {
             Button(
                 onClick = onSaveClick,
@@ -162,54 +204,6 @@ fun EventEditBody(
 }
 
 @Composable
-fun EventEditForm(
-    eventDetails: EventDetails,
-    modifier: Modifier = Modifier,
-    onValueChange: (EventDetails) -> Unit = {},
-    enabled: Boolean = true
-) {
-    val sdf = SimpleDateFormat(stringResource(R.string.date_pattern))
-    Column(
-        modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_medium))
-    ) {
-        OutlinedTextField(
-            value = eventDetails.name,
-            onValueChange = { onValueChange(eventDetails.copy(name = it)) },
-            label = { Text(stringResource(R.string.event_name_req)) },
-            colors = OutlinedTextFieldDefaults.colors(
-                focusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
-                unfocusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
-                disabledContainerColor = MaterialTheme.colorScheme.secondaryContainer,
-            ),
-            modifier = Modifier.fillMaxWidth(),
-            enabled = enabled,
-            singleLine = true
-        )
-        OutlinedTextField(
-            value = sdf.format(eventDetails.date),
-            onValueChange = { onValueChange(eventDetails.copy(date = Date())) },
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
-            label = { Text(stringResource(R.string.event_date_req)) },
-            colors = OutlinedTextFieldDefaults.colors(
-                focusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
-                unfocusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
-                disabledContainerColor = MaterialTheme.colorScheme.secondaryContainer,
-            ),
-            modifier = Modifier.fillMaxWidth(),
-            enabled = enabled,
-            singleLine = true
-        )
-        if (enabled) {
-            Text(
-                text = stringResource(R.string.required_fields),
-                modifier = Modifier.padding(start = dimensionResource(id = R.dimen.padding_medium))
-            )
-        }
-    }
-}
-
-@Composable
 private fun DeleteConfirmationDialog(
     onDeleteConfirm: () -> Unit, onDeleteCancel: () -> Unit, modifier: Modifier = Modifier
 ) {
@@ -226,5 +220,6 @@ private fun DeleteConfirmationDialog(
             TextButton(onClick = onDeleteConfirm) {
                 Text(text = stringResource(R.string.yes))
             }
-        })
+        }
+    )
 }
