@@ -71,7 +71,7 @@ fun EventDetailsScreen(
                 title = stringResource(EventDetailsDestination.titleRes),
                 canNavigateBack = true,
                 navigateUp = navigateBack,
-                navigateBack = navigateBack
+                navigateBack = navigateBack,
             )
         },
         floatingActionButton = {

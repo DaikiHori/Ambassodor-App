@@ -1,15 +1,10 @@
 package com.ambassador.app.ui
 
-import android.app.DatePickerDialog
-import android.app.Dialog
 import android.graphics.Bitmap
 import android.icu.text.SimpleDateFormat
-import android.os.Bundle
 import android.util.Log
-import android.widget.DatePicker
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
-import androidx.fragment.app.DialogFragment
 import com.ambassador.app.R
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.EncodeHintType
@@ -17,12 +12,10 @@ import com.google.zxing.MultiFormatWriter
 import com.google.zxing.common.BitMatrix
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel
 import com.journeyapps.barcodescanner.BarcodeEncoder
-import java.util.Calendar
 import java.util.Date
 
 
 class Utility {
-
     companion object {
         @Composable
         fun stringToDate(it: String): Date {

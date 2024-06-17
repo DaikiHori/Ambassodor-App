@@ -62,7 +62,7 @@ fun EventEntryScreen(
                 title = stringResource(EventEntryDestination.titleRes),
                 canNavigateBack = canNavigateBack,
                 navigateUp = onNavigateUp,
-                navigateBack = navigateBack
+                navigateBack = navigateBack,
             )
         }
     ) { innerPadding ->

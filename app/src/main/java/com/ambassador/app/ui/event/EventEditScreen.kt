@@ -87,7 +87,7 @@ fun EventEditScreen(
                 title = stringResource(EventEditDestination.titleRes),
                 canNavigateBack = true,
                 navigateUp = onNavigateUp,
-                navigateBack = navigateBack
+                navigateBack = navigateBack,
             )
         },
         modifier = modifier

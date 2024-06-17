@@ -9,10 +9,14 @@ import androidx.lifecycle.viewModelScope
 import com.ambassador.app.data.Code
 import com.ambassador.app.data.EventsRepository
 import com.ambassador.app.data.CodesRepository
+import com.ambassador.app.ui.event.EventDetails
 import com.ambassador.app.ui.event.EventDetailsDestination
+import com.ambassador.app.ui.event.EventUiState
+import com.ambassador.app.ui.event.toEventUiState
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import java.util.Date
 
 class CodesViewModel(
     savedStateHandle: SavedStateHandle,
@@ -21,7 +25,7 @@ class CodesViewModel(
 ) : ViewModel() {
     var codesUiState by mutableStateOf(CodesUiState())
         private set
-
+    var eventUiState by mutableStateOf(EventUiState())
     private val eventId: Int = checkNotNull(savedStateHandle[EventDetailsDestination.eventIdArg])
 
     init {
@@ -30,6 +34,9 @@ class CodesViewModel(
                 .filterNotNull()
                 .first()
                 .toCodesUiState()
+            eventUiState = eventsRepository.getEventStream(eventId)
+                .filterNotNull()
+                .first().event.toEventUiState()
         }
     }
     companion object {
@@ -69,10 +76,31 @@ data class CodesDetails(
     val userName: String = ""
 )
 
+data class Event(
+    val id: Int = 0,
+    val name: String = "",
+    val date: Date = Date(),
+    val url: String = ""
+)
+data class EventDetails(
+    val id: Int = 0,
+    val name: String = "",
+    val date: Date = Date(),
+    val url: String = ""
+)
+fun Event.toEventUiState() :EventUiState = EventUiState(
+    eventDetails = this.toEventDetails()
+)
+fun Event.toEventDetails() :EventDetails = EventDetails(
+    id = id,
+    name = name,
+    date = date,
+    url = url
+)
+
 fun Code.toCodesUiState() :CodesUiState = CodesUiState(
     codesDetails = this.toCodesDetails()
 )
-
 fun Code.toCodesDetails() :CodesDetails = CodesDetails(
     id = id,
     eventId = eventId,
@@ -81,7 +109,6 @@ fun Code.toCodesDetails() :CodesDetails = CodesDetails(
     usable = usable,
     userName = userName
 )
-
 fun CodesDetails.toCode(): Code = Code(
     id = id,
     eventId = eventId,

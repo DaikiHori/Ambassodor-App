@@ -29,10 +29,6 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
@@ -46,17 +42,14 @@ import com.ambassador.app.AmbassadorTopAppBar
 import com.ambassador.app.R
 import com.ambassador.app.data.EventAndCodes
 import com.ambassador.app.ui.AppViewModelProvider
+import com.ambassador.app.ui.Utility
 import com.ambassador.app.ui.navigation.NavigationDestination
-import java.text.SimpleDateFormat
 
 object HomeDestination : NavigationDestination {
     override val route = "home"
     override val titleRes = R.string.app_name
 }
 
-/**
- * Entry route for Home screen
- */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
@@ -75,7 +68,7 @@ fun HomeScreen(
                 title = stringResource(HomeDestination.titleRes),
                 canNavigateBack = false,
                 scrollBehavior = scrollBehavior,
-                navigateBack = { }
+                navigateBack = { },
             )
         },
         floatingActionButton = {
@@ -166,7 +159,6 @@ private fun EventEntry(
     navigateToEventEdit: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val sdf = SimpleDateFormat(stringResource(R.string.date_pattern))
     Card(
         modifier = modifier, elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
@@ -174,8 +166,6 @@ private fun EventEntry(
             modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_large)),
             verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_small))
         ) {
-            var deleteConfirmationRequired by rememberSaveable { mutableStateOf(false) }
-            val coroutineScope = rememberCoroutineScope()
             Row(
                 modifier = Modifier.fillMaxWidth()
             ) {
@@ -186,7 +176,7 @@ private fun EventEntry(
                     )
                     Spacer(Modifier.weight(1f))
                     Text(
-                        text = sdf.format(event.event.date),
+                        text = Utility.dateToString(event.event.date),
                         style = MaterialTheme.typography.titleMedium
                     )
                 }

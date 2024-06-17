@@ -1,7 +1,18 @@
 package com.ambassador.app
 
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.Icons.Filled
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Info
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -9,24 +20,27 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import coil.compose.AsyncImage
 import com.ambassador.app.R.string
+import com.ambassador.app.ui.Utility
 import com.ambassador.app.ui.navigation.AmbassadorNavHost
 
-/**
- * Top level composable that represents screens for the application.
- */
 @Composable
 fun AmbassadorApp(navController: NavHostController = rememberNavController()) {
     AmbassadorNavHost(navController = navController)
 }
 
-/**
- * App bar to display title and conditionally display the back navigation.
- */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AmbassadorTopAppBar(
@@ -35,8 +49,11 @@ fun AmbassadorTopAppBar(
     modifier: Modifier = Modifier,
     scrollBehavior: TopAppBarScrollBehavior? = null,
     navigateUp: () -> Unit = {},
-    navigateBack: () -> Unit
+    navigateBack: () -> Unit,
+    menu: Boolean = false,
+    url: String = ""
 ) {
+    var onClickInfo by remember { mutableStateOf(false) }
     CenterAlignedTopAppBar(
         title = { Text(title) },
         modifier = modifier,
@@ -50,6 +67,65 @@ fun AmbassadorTopAppBar(
                     )
                 }
             }
+        },
+        actions = { 
+            if(menu){
+                TopAppBarActions({ onClickInfo = true },{})
+            }
         }
     )
+
+    //QRcode
+    if(onClickInfo){
+        AlertDialog(
+            onDismissRequest = {
+                onClickInfo = false
+            },
+            title = {
+                Text("URL")
+            },
+            text = {
+                Column(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    AsyncImage(
+                        model = Utility.qrCode(url),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                    )
+                    Spacer(modifier = Modifier.height(16.dp))
+                    Text("QRcode")
+                }
+            },
+            confirmButton = {
+                Button(
+                    onClick = {
+                        onClickInfo = false
+                    }
+                ) {
+                    Text("OK")
+                }
+            }
+        )
+    }
+}
+
+@Composable
+fun TopAppBarActions(
+    showDialog: () -> Unit,
+    onMoreClick: () -> Unit
+) {
+    Row {
+        IconButton(
+            onClick = showDialog
+        ) {
+            Icon(
+                imageVector = Icons.Default.Info,
+                contentDescription = "More"
+            )
+        }
+        // その他のアクションボタン
+    }
 }

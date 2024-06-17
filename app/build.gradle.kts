@@ -71,6 +71,7 @@ dependencies {
     implementation("androidx.core:core-ktx:1.12.0")
     implementation("com.google.firebase:protolite-well-known-types:18.0.0")
     implementation("com.google.android.libraries.places:places:3.5.0")
+    //implementation("androidx.compose.material3:material3-android:1.2.1")
     ksp("androidx.room:room-compiler:${rootProject.extra["room_version"]}")
     implementation("androidx.room:room-ktx:${rootProject.extra["room_version"]}")
 
