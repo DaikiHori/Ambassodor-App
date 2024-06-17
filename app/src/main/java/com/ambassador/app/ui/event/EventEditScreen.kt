@@ -32,6 +32,8 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults.buttonColors
+import androidx.compose.material3.DatePicker
+import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
@@ -39,11 +41,13 @@ import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -59,7 +63,6 @@ import com.ambassador.app.ui.AppViewModelProvider
 import com.ambassador.app.ui.Utility
 import com.ambassador.app.ui.navigation.NavigationDestination
 import kotlinx.coroutines.launch
-import java.text.SimpleDateFormat
 import java.util.Date
 
 object EventEditDestination : NavigationDestination {
@@ -83,7 +86,8 @@ fun EventEditScreen(
             AmbassadorTopAppBar(
                 title = stringResource(EventEditDestination.titleRes),
                 canNavigateBack = true,
-                navigateUp = onNavigateUp
+                navigateUp = onNavigateUp,
+                navigateBack = navigateBack
             )
         },
         modifier = modifier
@@ -113,6 +117,7 @@ fun EventEditScreen(
         )
     }
 }
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EventEditBody(
     eventUiState: EventUiState,
@@ -122,7 +127,6 @@ fun EventEditBody(
     enabled: Boolean = true,
     modifier: Modifier = Modifier
 ) {
-    var deleteConfirmationRequired by rememberSaveable { mutableStateOf(false) }
     Column(
         modifier = modifier.padding(dimensionResource(id = R.dimen.padding_medium)),
         verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_large))
@@ -130,13 +134,16 @@ fun EventEditBody(
         val eventDetails = eventUiState.eventDetails
         val onValueChange = onEventValueChange
         val modifier = Modifier.fillMaxWidth()
+        var isCalendarVisible by remember { mutableStateOf(false) }
+        var selectedDate by remember { mutableStateOf(Date()) }
+        var deleteConfirmationRequired by remember { mutableStateOf(false) }
         Column(
             modifier = modifier,
             verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_medium))
         ) {
             OutlinedTextField(
                 value = eventDetails.name,
-                onValueChange = { eventDetails.copy(name = it) },
+                onValueChange = { onValueChange(eventDetails.copy(name = it)) },
                 label = { Text(stringResource(R.string.event_name_req)) },
                 colors = OutlinedTextFieldDefaults.colors(
                     focusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
@@ -148,8 +155,8 @@ fun EventEditBody(
                 singleLine = true
             )
             OutlinedTextField(
-                value = Utility.dateToString(eventDetails.date),
-                onValueChange = { },//onValueChange(eventDetails.copy(date = Utility.stringToDate(it))) },
+                value = Utility.dateToString(selectedDate),
+                onValueChange = {  },
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
                 label = { Text(stringResource(R.string.event_date_req)) },
                 colors = OutlinedTextFieldDefaults.colors(
@@ -157,18 +164,70 @@ fun EventEditBody(
                     unfocusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
                     disabledContainerColor = MaterialTheme.colorScheme.secondaryContainer,
                 ),
-                modifier = Modifier.fillMaxWidth()
-                    .clickable(onClick = {
-
-                    }),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable {
+                        isCalendarVisible = !isCalendarVisible
+                    },
                 enabled = false,
                 singleLine = true
             )
+            OutlinedTextField(
+                value = eventDetails.url,
+                onValueChange = { onValueChange(eventDetails.copy(url = it)) },
+                label = { Text(stringResource(R.string.campfile_url)) },
+                colors = OutlinedTextFieldDefaults.colors(
+                    focusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
+                    unfocusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
+                    disabledContainerColor = MaterialTheme.colorScheme.secondaryContainer,
+                ),
+                modifier = Modifier.fillMaxWidth(),
+                enabled = enabled,
+                singleLine = true
+            )
+
             if (enabled) {
                 Text(
                     text = stringResource(R.string.required_fields),
-                    modifier = Modifier.padding(start = dimensionResource(id = R.dimen.padding_medium))
+                    modifier = Modifier.padding(start = dimensionResource(id = R.dimen.padding_medium)),
                 )
+            }
+
+            //DatePickerDialog
+            if (isCalendarVisible) {
+                val datePickerState = rememberDatePickerState(
+                    initialSelectedDateMillis = eventDetails.date.time
+                )
+                val confirmEnabled = remember {
+                    derivedStateOf { datePickerState.selectedDateMillis != null }
+                }
+                DatePickerDialog(
+                    onDismissRequest = {
+                        isCalendarVisible = false
+                    },
+                    confirmButton = {
+                        TextButton(
+                            onClick = {
+                                val selectedDateMillis = datePickerState.selectedDateMillis
+                                isCalendarVisible = false
+                                if (selectedDateMillis != null) {
+                                    selectedDate = Date(selectedDateMillis)
+                                    onValueChange(eventDetails.copy(date = Date(selectedDateMillis)))
+                                } else {
+                                    isCalendarVisible = false
+                                }
+                            },
+                            enabled = confirmEnabled.value
+                        ) {
+                            Text("OK")
+                        }
+                    },
+                    dismissButton = {
+                        TextButton(onClick = { isCalendarVisible = false }) { Text("Cancel") }
+                    }
+                ) {
+                    DatePicker(state = datePickerState)
+                }
             }
         }
         Row {

@@ -73,7 +73,7 @@ class EventEntryViewModel(
  * Represents Ui State for an Event.
  */
 data class EventUiState(
-    val eventDetails: EventDetails = EventDetails(id = 0,name= "",date = Date(),code = ""),
+    val eventDetails: EventDetails = EventDetails(id = 0,name= "",date = Date(),code = "",url = ""),
     val isEntryValid: Boolean = false
 )
 
@@ -81,13 +81,15 @@ data class EventDetails(
     val id: Int = 0,
     val name: String = "",
     val date: Date,
-    val code: String = ""
+    val code: String = "",
+    val url: String = ""
 )
 
 fun EventDetails.toEvent(): Event = Event(
     id = id,
     name = name,
-    date = date
+    date = date,
+    url = url
 )
 
 fun EventDetails.toCodes(): Code = Code(
@@ -116,5 +118,6 @@ fun Event.toEventUiState(isEntryValid: Boolean = false): EventUiState = EventUiS
 fun Event.toEventDetails(): EventDetails = EventDetails(
     id = id,
     name = name,
-    date = date
+    date = date,
+    url = url
 )

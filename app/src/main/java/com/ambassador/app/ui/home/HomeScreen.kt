@@ -74,7 +74,8 @@ fun HomeScreen(
             AmbassadorTopAppBar(
                 title = stringResource(HomeDestination.titleRes),
                 canNavigateBack = false,
-                scrollBehavior = scrollBehavior
+                scrollBehavior = scrollBehavior,
+                navigateBack = { }
             )
         },
         floatingActionButton = {

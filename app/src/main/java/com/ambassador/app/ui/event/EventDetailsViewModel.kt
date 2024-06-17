@@ -52,5 +52,5 @@ class EventDetailsViewModel(
  */
 data class EventDetailsUiState(
     val outOfStock: Boolean = true,
-    val eventDetails: EventDetails = EventDetails(id = 0, name = "", date = Date(),code = "")
+    val eventDetails: EventDetails = EventDetails(id = 0, name = "", date = Date(),code = "",url = "")
 )

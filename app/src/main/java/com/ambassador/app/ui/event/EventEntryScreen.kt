@@ -61,7 +61,8 @@ fun EventEntryScreen(
             AmbassadorTopAppBar(
                 title = stringResource(EventEntryDestination.titleRes),
                 canNavigateBack = canNavigateBack,
-                navigateUp = onNavigateUp
+                navigateUp = onNavigateUp,
+                navigateBack = navigateBack
             )
         }
     ) { innerPadding ->
@@ -122,8 +123,8 @@ fun EventEntryBody(
                 singleLine = true
             )
             OutlinedTextField(
-                value = selectedDate.toString(),//Utility.dateToString(eventDetails.date),
-                onValueChange = {  },//eventDetails.copy(date = Utility.stringToDate(it))) },
+                value = Utility.dateToString(selectedDate),
+                onValueChange = {  },
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
                 label = { Text(stringResource(R.string.event_date_req)) },
                 colors = OutlinedTextFieldDefaults.colors(
@@ -143,6 +144,19 @@ fun EventEntryBody(
                 value = eventDetails.code,
                 onValueChange = { onValueChange(eventDetails.copy(code = it)) },
                 label = { Text(stringResource(R.string.codes)) },
+                colors = OutlinedTextFieldDefaults.colors(
+                    focusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
+                    unfocusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
+                    disabledContainerColor = MaterialTheme.colorScheme.secondaryContainer,
+                ),
+                modifier = Modifier.fillMaxWidth(),
+                enabled = enabled,
+                singleLine = true
+            )
+            OutlinedTextField(
+                value = eventDetails.url,
+                onValueChange = { onValueChange(eventDetails.copy(url = it)) },
+                label = { Text(stringResource(R.string.campfile_url)) },
                 colors = OutlinedTextFieldDefaults.colors(
                     focusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
                     unfocusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,

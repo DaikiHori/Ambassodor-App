@@ -34,7 +34,8 @@ fun AmbassadorTopAppBar(
     canNavigateBack: Boolean,
     modifier: Modifier = Modifier,
     scrollBehavior: TopAppBarScrollBehavior? = null,
-    navigateUp: () -> Unit = {}
+    navigateUp: () -> Unit = {},
+    navigateBack: () -> Unit
 ) {
     CenterAlignedTopAppBar(
         title = { Text(title) },

@@ -13,5 +13,6 @@ data class Event(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
     val name: String,
-    val date: Date
+    val date: Date,
+    val url: String
 )

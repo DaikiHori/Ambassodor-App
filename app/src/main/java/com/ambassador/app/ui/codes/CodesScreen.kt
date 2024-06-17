@@ -1,7 +1,5 @@
 package com.ambassador.app.ui.codes
 
-import android.graphics.Bitmap
-import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -37,13 +35,8 @@ import coil.compose.AsyncImage
 import com.ambassador.app.AmbassadorTopAppBar
 import com.ambassador.app.R
 import com.ambassador.app.ui.AppViewModelProvider
+import com.ambassador.app.ui.Utility
 import com.ambassador.app.ui.navigation.NavigationDestination
-import com.google.zxing.BarcodeFormat
-import com.google.zxing.EncodeHintType
-import com.google.zxing.MultiFormatWriter
-import com.google.zxing.common.BitMatrix
-import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel
-import com.journeyapps.barcodescanner.BarcodeEncoder
 import kotlinx.coroutines.launch
 
 object CodesDestination : NavigationDestination {
@@ -70,7 +63,8 @@ fun CodesScreen(
             AmbassadorTopAppBar(
                 title = stringResource(CodesDestination.titleRes),
                 canNavigateBack = true,
-                navigateUp = navigateBack
+                navigateUp = navigateBack,
+                navigateBack = navigateBack
             )
         }
     ) { innerPadding ->
@@ -144,7 +138,7 @@ private fun CodeView(
         ){
             if (codesUiState.codesDetails.code.isNotEmpty()) {
                 AsyncImage(
-                    model = qrCode(stringResource(R.string.url) + (codesUiState.codesDetails.code)),
+                    model = Utility.qrCode(stringResource(R.string.url) + (codesUiState.codesDetails.code)),
                     contentDescription = null,
                     modifier = Modifier
                         .fillMaxWidth()
@@ -208,33 +202,4 @@ fun CodeEditForm(
             singleLine = true
         )
     }
-}
-
-fun qrCode(data: String): Bitmap? {
-    val bitMatrix = createBitMatrix(data)
-    return try {
-        bitMatrix?.let { createBitmap(it) }
-    }catch (e: Exception){
-        e.message?.let { Log.d("bitmap_error", data) }
-        null
-    }
-}
-
-fun createBitMatrix(data: String): BitMatrix? {
-    val multiFormatWriter = MultiFormatWriter()
-    val hints = mapOf(
-        EncodeHintType.MARGIN to 0,
-        EncodeHintType.ERROR_CORRECTION to ErrorCorrectionLevel.L
-    )
-    return multiFormatWriter.encode(
-        data,
-        BarcodeFormat.QR_CODE,
-        700,
-        700,
-        hints
-    )
-}
-fun createBitmap(bitMatrix: BitMatrix): Bitmap {
-    val barcodeEncoder = BarcodeEncoder()
-    return barcodeEncoder.createBitmap(bitMatrix)
 }
