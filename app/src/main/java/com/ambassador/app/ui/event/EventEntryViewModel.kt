@@ -1,10 +1,8 @@
 package com.ambassador.app.ui.event
 
-import androidx.activity.ComponentActivity
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModel
 import com.ambassador.app.data.Code
 import com.ambassador.app.data.CodesRepository
@@ -14,32 +12,19 @@ import com.ambassador.app.data.EventsRepository
 import java.text.NumberFormat
 import java.util.Date
 
-/**
- * ViewModel to validate and insert events in the Room database.
- */
 class EventEntryViewModel(
     private val eventsRepository: EventsRepository,
     private val codesRepository: CodesRepository
 ) : ViewModel() {
 
-    /**
-     * Holds current event ui state
-     */
     var eventUiState by mutableStateOf(EventUiState())
         private set
 
-    /**
-     * Updates the [eventUiState] with the value provided in the argument. This method also triggers
-     * a validation for input values.
-     */
     fun updateUiState(eventDetails: EventDetails) {
         eventUiState =
             EventUiState(eventDetails = eventDetails, isEntryValid = validateInput(eventDetails))
     }
 
-    /**
-     * Inserts an [Event] in the Room database
-     */
     suspend fun saveEvent() {
         if (validateInput()) {
             try {
@@ -69,9 +54,6 @@ class EventEntryViewModel(
 
 }
 
-/**
- * Represents Ui State for an Event.
- */
 data class EventUiState(
     val eventDetails: EventDetails = EventDetails(id = 0,name= "",date = Date(),code = "",url = ""),
     val isEntryValid: Boolean = false
@@ -104,17 +86,11 @@ fun Event.formatedDate(): String {
     return NumberFormat.getCurrencyInstance().format(date)
 }
 
-/**
- * Extension function to convert [Event] to [EventUiState]
- */
 fun Event.toEventUiState(isEntryValid: Boolean = false): EventUiState = EventUiState(
     eventDetails = this.toEventDetails(),
     isEntryValid = isEntryValid
 )
 
-/**
- * Extension function to convert [Event] to [EventDetails]
- */
 fun Event.toEventDetails(): EventDetails = EventDetails(
     id = id,
     name = name,

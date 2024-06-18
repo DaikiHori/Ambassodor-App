@@ -25,7 +25,4 @@ class HomeViewModel(
     }
 }
 
-/**
- * Ui State for HomeScreen
- */
 data class HomeUiState(val eventList: List<EventAndCodes> = listOf())

@@ -21,6 +21,7 @@ object AppViewModelProvider {
                 ambassadorApplication().container.eventsRepository
             )
         }
+
         // Initializer for EventEntryViewModel
         initializer {
             EventEntryViewModel(

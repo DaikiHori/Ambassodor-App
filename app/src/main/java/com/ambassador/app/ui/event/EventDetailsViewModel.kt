@@ -11,9 +11,6 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import java.util.Date
 
-/**
- * ViewModel to retrieve, update and delete an event from the [EventsRepository]'s data source.
- */
 class EventDetailsViewModel(
     savedStateHandle: SavedStateHandle,
     private val eventsRepository: EventsRepository,
