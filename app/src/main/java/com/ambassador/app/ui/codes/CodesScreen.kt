@@ -142,7 +142,7 @@ private fun CodeView(
                 .size(300.dp)
                 .align(Alignment.CenterHorizontally)
         ){
-            if (codesUiState.codesDetails.code.isNotEmpty()) {
+            if (codesUiState.codesDetails.code.isNotEmpty() && !codesUiState.codesDetails.used && codesUiState.codesDetails.usable) {
                 AsyncImage(
                     model = Utility.qrCode(stringResource(R.string.url) + (codesUiState.codesDetails.code)),
                     contentDescription = null,
@@ -150,11 +150,11 @@ private fun CodeView(
                         .fillMaxWidth()
                 )
             } else {
-                //navigateBack()
+                navigateBack()
             }
         }
         Spacer(modifier = Modifier.height(1.dp))
-        Text(codesUiState.codesDetails.code)
+        Text(codesUiState.codesDetails.code,modifier = Modifier.padding(10.dp))
         CodeEditForm(
             codesDetails = codesUiState.codesDetails,
             onValueChange = onValueChange,
@@ -206,32 +206,6 @@ fun CodeEditForm(
             ),
             modifier = Modifier.fillMaxWidth(),
             singleLine = true
-        )
-    }
-}
-
-@Composable
-fun TopAppBarActions(
-    onMoreClick: () -> Unit,
-    onSearchClick: () -> Unit,
-    url: String = ""
-) {
-    var showDialog by remember { mutableStateOf(false) }
-
-    if (showDialog&&url.isNotEmpty()) {
-        AlertDialog(
-            onDismissRequest = { showDialog = false },
-            title = { Text(stringResource(R.string.event)) },
-            text = { AsyncImage(model = Utility.qrCode(url), contentDescription = "") },
-            confirmButton = {
-                Button(
-                    onClick = {
-                        showDialog = false
-                    }
-                ) {
-                    Text(stringResource(R.string.yes))
-                }
-            }
         )
     }
 }

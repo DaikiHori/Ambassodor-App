@@ -191,7 +191,7 @@ private fun EventEntry(
                     onClick = { navigateToEventEdit(event.event.id) },
                     shape = MaterialTheme.shapes.small
                 ) {
-                    Text(text = "edit")
+                    Text(text = stringResource(R.string.edit_action))
                 }
 
                 Spacer(Modifier.weight(1f))
@@ -199,7 +199,7 @@ private fun EventEntry(
                     onClick = { navigateToCodes(event.event.id) },
                     shape = MaterialTheme.shapes.small
                 ) {
-                    Text(text = "codes")
+                    Text(text = stringResource(R.string.code))
                 }
             }
         }

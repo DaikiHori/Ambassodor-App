@@ -12,11 +12,12 @@
     <string name="event_name_req">Name*</string>
     <string name="event_date_req">Date*</string>
     <string name="no">No</string>
+    <string name="price">Price</string>
     <string name="codes">codes</string>
-    <string name="code">code</string>
     <string name="codes_count">%d codes</string>
+    <string name="quantity_req">Quantity in Stock*</string>
     <string name="save_action">Save</string>
-    <string name="edit_action">Edit</string>
+    <string name="sell">Sell</string>
     <string name="yes">Yes</string>
     <string name="required_fields">*required fields</string>
     <string name="date_pattern">MMM d, yyyy</string>
