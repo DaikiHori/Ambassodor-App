@@ -1,0 +1,85 @@
+package com.cambassador.app.ui.navigation
+
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.navigation.NavHostController
+import androidx.navigation.NavType
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
+import com.cambassador.app.ui.codes.CodesDestination
+import com.cambassador.app.ui.codes.CodesScreen
+import com.cambassador.app.ui.home.HomeDestination
+import com.cambassador.app.ui.home.HomeScreen
+import com.cambassador.app.ui.event.EventDetailsDestination
+import com.cambassador.app.ui.event.EventDetailsScreen
+import com.cambassador.app.ui.event.EventEditDestination
+import com.cambassador.app.ui.event.EventEditScreen
+import com.cambassador.app.ui.event.EventEntryDestination
+import com.cambassador.app.ui.event.EventEntryScreen
+
+@Composable
+fun AmbassadorNavHost(
+    navController: NavHostController,
+    modifier: Modifier = Modifier,
+) {
+    NavHost(
+        navController = navController,
+        startDestination = HomeDestination.route,
+        modifier = modifier
+    ) {
+        composable(
+            route = HomeDestination.route,
+            arguments = listOf(navArgument(CodesDestination.eventIdArg) {
+                type = NavType.IntType
+            })
+        ) {
+            HomeScreen(
+                navigateToEventEntry = { navController.navigate(EventEntryDestination.route) },
+                navigateToEventEdit = { navController.navigate("${EventEditDestination.route}/$it")},
+                navigateToCodes = { navController.navigate("${CodesDestination.route}/$it")}
+            )
+        }
+        composable(route = EventEntryDestination.route) {
+            EventEntryScreen(
+                navigateBack = { navController.popBackStack() },
+                onNavigateUp = { navController.navigateUp() }
+            )
+        }
+        composable(
+            route = EventDetailsDestination.routeWithArgs,
+            arguments = listOf(navArgument(EventDetailsDestination.eventIdArg) {
+                type = NavType.IntType
+            })
+        ) {
+            EventDetailsScreen(
+                navigateToCodes = { navController.navigate("${CodesDestination.routeWithArgs}/$it") },
+                navigateToEditEvent = { navController.navigate("${EventEditDestination.route}/$it") },
+                navigateBack = { navController.navigateUp() }
+            )
+        }
+        composable(
+            route = EventEditDestination.routeWithArgs,
+            arguments = listOf(navArgument(EventEditDestination.eventIdArg) {
+                type = NavType.IntType
+            })
+        ) {
+            EventEditScreen(
+                navigateBack = { navController.popBackStack() },
+                onNavigateUp = { navController.navigateUp() }
+            )
+        }
+        composable(
+            route = CodesDestination.routeWithArgs,
+            arguments = listOf(navArgument(CodesDestination.eventIdArg) {
+                type = NavType.IntType
+            })
+        ) {
+            CodesScreen(
+                navigateBack = { navController.popBackStack(HomeDestination.route,inclusive = false) },
+                onNavigateUp = { navController.popBackStack() },
+                onSaveEnd =  { navController.navigate("${CodesDestination.route}/$it")}
+            )
+        }
+    }
+}

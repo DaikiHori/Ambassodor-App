@@ -8,11 +8,11 @@ android {
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.ambassador.app"
+        applicationId = "com.cambassador.app"
         minSdk = 24
         targetSdk = 34
-        versionCode = 2
-        versionName = "1.01"
+        versionCode = 3
+        versionName = "1.02"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -47,7 +47,7 @@ android {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
-    namespace = "com.ambassador.app"
+    namespace = "com.cambassador.app"
 }
 
 dependencies {
