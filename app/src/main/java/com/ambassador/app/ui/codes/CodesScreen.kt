@@ -149,8 +149,6 @@ private fun CodeView(
                     modifier = Modifier
                         .fillMaxWidth()
                 )
-            } else {
-                navigateBack()
             }
         }
         Spacer(modifier = Modifier.height(1.dp))
