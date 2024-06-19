@@ -73,7 +73,7 @@ fun AmbassadorTopAppBar(
     )
 
     //QRcode
-    if(onClickInfo){
+    if(onClickInfo && url.isNotBlank()){
         AlertDialog(
             onDismissRequest = {
                 onClickInfo = false
