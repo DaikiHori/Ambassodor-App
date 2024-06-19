@@ -13,6 +13,5 @@ interface CodesRepository {
 
     suspend fun deleteCode(code: Code)
 
-
     suspend fun updateCode(code: Code)
 }

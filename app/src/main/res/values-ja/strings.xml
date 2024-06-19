@@ -13,7 +13,7 @@
     <string name="event_date_req">日付*</string>
     <string name="no">いいえ</string>
     <string name="codes">プロモーションコード</string>
-    <string name="code">コード</string>
+    <string name="code">コード*</string>
     <string name="codes_count">%d 個</string>
     <string name="save_action">保存</string>
     <string name="edit_action">編集</string>

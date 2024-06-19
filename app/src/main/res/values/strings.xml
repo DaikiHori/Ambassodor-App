@@ -12,7 +12,7 @@
     <string name="event_name_req">Name*</string>
     <string name="event_date_req">Date*</string>
     <string name="no">No</string>
-    <string name="codes">codes</string>
+    <string name="codes">codes*</string>
     <string name="code">code</string>
     <string name="codes_count">%d codes</string>
     <string name="save_action">Save</string>

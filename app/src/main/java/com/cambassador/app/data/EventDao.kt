@@ -16,13 +16,16 @@ interface EventDao {
     @Query("SELECT * from events ORDER BY name ASC")
     fun getAllEvents(): Flow<List<EventAndCodes>>
 
+    @Transaction
+    @Query("SELECT e.*, COUNT(c.id) AS count FROM events e " +
+            "LEFT JOIN codes c ON e.id = c.eventId " +
+            "GROUP BY e.id")
+    fun getAllEventsWithCount(): Flow<List<EventAndCodes>>
 
     @Transaction
     @Query("SELECT * from events WHERE id = :id")
     fun getEvent(id: Int): Flow<EventAndCodes>
 
-    // Specify the conflict strategy as IGNORE, when the user tries to add an
-    // existing Item into the database Room ignores the conflict.
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insert(event: Event): Long
 

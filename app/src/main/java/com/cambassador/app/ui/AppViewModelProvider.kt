@@ -14,7 +14,7 @@ import com.cambassador.app.ui.codes.CodesViewModel
 
 object AppViewModelProvider {
     val Factory = viewModelFactory {
-        // Initializer for EventEditViewModel
+
         initializer {
             EventEditViewModel(
                 this.createSavedStateHandle(),
@@ -22,7 +22,6 @@ object AppViewModelProvider {
             )
         }
 
-        // Initializer for EventEntryViewModel
         initializer {
             EventEntryViewModel(
                 ambassadorApplication().container.eventsRepository,
@@ -30,7 +29,6 @@ object AppViewModelProvider {
             )
         }
 
-        // Initializer for EventDetailsViewModel
         initializer {
             EventDetailsViewModel(
                 this.createSavedStateHandle(),
@@ -38,7 +36,6 @@ object AppViewModelProvider {
             )
         }
 
-        // Initializer for CodesViewModel
         initializer {
             CodesViewModel(
                 this.createSavedStateHandle(),
@@ -47,7 +44,6 @@ object AppViewModelProvider {
             )
         }
 
-        // Initializer for HomeViewModel
         initializer {
             HomeViewModel(ambassadorApplication().container.eventsRepository)
         }

@@ -16,9 +16,6 @@ class EventEditViewModel(
     private val eventsRepository: EventsRepository
 ) : ViewModel() {
 
-    /**
-     * Holds current event ui state
-     */
     var eventUiState by mutableStateOf(EventUiState())
         private set
 

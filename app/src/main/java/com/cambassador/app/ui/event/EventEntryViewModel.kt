@@ -48,7 +48,7 @@ class EventEntryViewModel(
 
     private fun validateInput(uiState: EventDetails = eventUiState.eventDetails): Boolean {
         return with(uiState) {
-            name.isNotBlank() && date.toString().isNotBlank()
+            name.isNotBlank() && date.toString().isNotBlank() && code.isNotBlank()
         }
     }
 
