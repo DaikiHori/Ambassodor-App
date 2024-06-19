@@ -41,7 +41,7 @@ import kotlinx.coroutines.launch
 
 object CodesDestination : NavigationDestination {
     override val route = "codes"
-    override val titleRes = R.string.codes
+    override val titleRes = R.string.code_long
     const val eventIdArg = "eventId"
     val routeWithArgs = "$route/{$eventIdArg}"
 }

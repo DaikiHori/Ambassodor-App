@@ -182,7 +182,7 @@ private fun EventEntry(
                 }
                 Spacer(Modifier.weight(1f))
                 Text(
-                    text = event.codes.count().toString(),
+                    text = event.codes.count{ !it.used && it.usable }.toString() + "/" + event.codes.count().toString(),
                     style = MaterialTheme.typography.titleMedium
                 )
                 Spacer(Modifier.weight(1f))

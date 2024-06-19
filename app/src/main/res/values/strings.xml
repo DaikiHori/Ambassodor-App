@@ -14,6 +14,7 @@
     <string name="no">No</string>
     <string name="codes">codes*</string>
     <string name="code">code</string>
+    <string name="code_long">code</string>
     <string name="codes_count">%d codes</string>
     <string name="save_action">Save</string>
     <string name="edit_action">Edit</string>
