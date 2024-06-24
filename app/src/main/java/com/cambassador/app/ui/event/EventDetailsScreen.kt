@@ -70,8 +70,7 @@ fun EventDetailsScreen(
             AmbassadorTopAppBar(
                 title = stringResource(EventDetailsDestination.titleRes),
                 canNavigateBack = true,
-                navigateUp = navigateBack,
-                navigateBack = navigateBack,
+                navigateUp = navigateBack
             )
         },
         floatingActionButton = {

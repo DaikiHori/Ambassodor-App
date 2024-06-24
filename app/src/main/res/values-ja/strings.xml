@@ -25,6 +25,7 @@
 
     <string name="code_viewer">QRコード</string>
     <string name="url">https://store.pokemongolive.com/offer-redemption?passcode=</string>
+    <string name="code_empty">コードを使い切りました。トップバーの戻るボタンで戻ってください。</string>
 
     <string name="user_name">ユーザ名</string>
     <string name="usable">使用可</string>

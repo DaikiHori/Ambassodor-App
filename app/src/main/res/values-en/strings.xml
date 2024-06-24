@@ -25,6 +25,7 @@
 
     <string name="code_viewer">Code Viewer</string>
     <string name="url">https://store.pokemongolive.com/offer-redemption?passcode=</string>
+    <string name="code_empty">I\'ve used up this code. Please return using the back button on the top bar.</string>
 
     <string name="user_name">User Name</string>
     <string name="usable">Usable</string>

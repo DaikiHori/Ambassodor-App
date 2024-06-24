@@ -37,7 +37,8 @@ fun AmbassadorNavHost(
             HomeScreen(
                 navigateToEventEntry = { navController.navigate(EventEntryDestination.route) },
                 navigateToEventEdit = { navController.navigate("${EventEditDestination.route}/$it")},
-                navigateToCodes = { navController.navigate("${CodesDestination.route}/$it")}
+                navigateToCodes = { navController.navigate("${CodesDestination.route}/$it")},
+                onNavigateBack = { navController.popBackStack(HomeDestination.route,inclusive = false) }
             )
         }
         composable(route = EventEntryDestination.route) {
@@ -77,7 +78,7 @@ fun AmbassadorNavHost(
         ) {
             CodesScreen(
                 navigateBack = { navController.popBackStack(HomeDestination.route,inclusive = false) },
-                onNavigateUp = { navController.popBackStack() },
+                onNavigateUp = { navController.popBackStack(HomeDestination.route,inclusive = false) },
                 onSaveEnd =  { navController.navigate("${CodesDestination.route}/$it")}
             )
         }

@@ -70,8 +70,7 @@ fun EventEditScreen(
             AmbassadorTopAppBar(
                 title = stringResource(EventEditDestination.titleRes),
                 canNavigateBack = true,
-                navigateUp = onNavigateUp,
-                navigateBack = navigateBack,
+                navigateUp = onNavigateUp
             )
         },
         modifier = modifier

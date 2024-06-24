@@ -1,5 +1,6 @@
 package com.cambassador.app
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -31,6 +32,7 @@ import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
 import com.cambassador.app.R.string
 import com.cambassador.app.ui.Utility
+import com.cambassador.app.ui.home.HomeDestination
 import com.cambassador.app.ui.navigation.AmbassadorNavHost
 
 @Composable
@@ -45,8 +47,7 @@ fun AmbassadorTopAppBar(
     canNavigateBack: Boolean,
     modifier: Modifier = Modifier,
     scrollBehavior: TopAppBarScrollBehavior? = null,
-    navigateUp: () -> Unit = {},
-    navigateBack: () -> Unit,
+    navigateUp: () -> Unit,
     menu: Boolean = false,
     url: String = ""
 ) {
@@ -93,7 +94,7 @@ fun AmbassadorTopAppBar(
                             .fillMaxWidth()
                     )
                     Spacer(modifier = Modifier.height(16.dp))
-                    Text("QRcode")
+                    Text(url)
                 }
             },
             confirmButton = {

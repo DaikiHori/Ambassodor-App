@@ -61,8 +61,7 @@ fun EventEntryScreen(
             AmbassadorTopAppBar(
                 title = stringResource(EventEntryDestination.titleRes),
                 canNavigateBack = canNavigateBack,
-                navigateUp = onNavigateUp,
-                navigateBack = navigateBack,
+                navigateUp = onNavigateUp
             )
         }
     ) { innerPadding ->

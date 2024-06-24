@@ -3,7 +3,6 @@ package com.cambassador.app.ui.codes
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.calculateEndPadding
@@ -52,19 +51,16 @@ fun CodesScreen(
     navigateBack: () -> Unit,
     onNavigateUp: () -> Unit,
     onSaveEnd: (Int) ->Unit,
-    modifier: Modifier = Modifier,
     viewModel: CodesViewModel = viewModel(factory = AppViewModelProvider.Factory),
     menu: Boolean = true
 ){
-    val coroutineScope = rememberCoroutineScope()
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
     Scaffold(
         topBar = {
             AmbassadorTopAppBar(
                 title = stringResource(CodesDestination.titleRes),
                 canNavigateBack = true,
-                navigateUp = navigateBack,
-                navigateBack = navigateBack,
+                navigateUp = onNavigateUp,
                 menu = menu,
                 url = viewModel.eventUiState.eventDetails.url
            )
@@ -74,16 +70,6 @@ fun CodesScreen(
                 codesUiState = viewModel.codesUiState,
                 onValueChange = viewModel::updateUiState,
                 navigateBack = navigateBack,
-                onSaveClick = {
-                    coroutineScope.launch {
-                        viewModel.updateCode()
-                        if(viewModel.codesUiState.codesDetails.code.isNotEmpty()) {
-                            onSaveEnd(viewModel.codesUiState.codesDetails.eventId)
-                        } else {
-                            navigateBack()
-                        }
-                    }
-                },
                 viewModel = viewModel,
                 modifier = Modifier
                     .padding(
@@ -91,20 +77,19 @@ fun CodesScreen(
                         top = innerPadding.calculateTopPadding(),
                         end = innerPadding.calculateEndPadding(LocalLayoutDirection.current),
                     ),
-                contentPadding = innerPadding,
+                onSaveEnd= onSaveEnd
             )
-
     }
 }
+
 @Composable
 private fun CodesBody(
     codesUiState: CodesUiState,
     onValueChange: (CodesDetails) -> Unit,
     navigateBack: () -> Unit,
-    onSaveClick: () -> Unit,
     viewModel: CodesViewModel,
     modifier: Modifier = Modifier,
-    contentPadding: PaddingValues = PaddingValues(0.dp),
+    onSaveEnd: (Int) -> Unit
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -112,93 +97,76 @@ private fun CodesBody(
             .padding(dimensionResource(id = R.dimen.padding_medium))
             .padding(10.dp),
     ) {
-        CodeView(
-            codesUiState = codesUiState,
-            onValueChange = viewModel::updateUiState,
-            onSaveClick = onSaveClick,
-            navigateBack = navigateBack,
-            modifier = Modifier
-                .padding(horizontal = dimensionResource(id = R.dimen.padding_small))
-        )
-    }
-}
-
-@Composable
-private fun CodeView(
-    codesUiState: CodesUiState,
-    onValueChange: (CodesDetails) -> Unit,
-    onSaveClick:() -> Unit,
-    navigateBack: () -> Unit,
-    modifier: Modifier
-){
-    Column(modifier = Modifier.fillMaxHeight()) {
-        Box (
-            modifier = Modifier
-                .size(300.dp)
-                .align(Alignment.CenterHorizontally)
-        ){
-            if (codesUiState.codesDetails.code.isNotEmpty() && !codesUiState.codesDetails.used && codesUiState.codesDetails.usable) {
-                AsyncImage(
-                    model = Utility.qrCode(stringResource(R.string.url) + (codesUiState.codesDetails.code)),
-                    contentDescription = null,
+        val coroutineScope = rememberCoroutineScope()
+        Column(modifier = Modifier.fillMaxHeight()) {
+            if(codesUiState.codesDetails.code.isNotEmpty()) {
+                Box(
                     modifier = Modifier
-                        .fillMaxWidth()
-                )
+                        .size(300.dp)
+                        .align(Alignment.CenterHorizontally)
+                ) {
+                    if (codesUiState.codesDetails.code.isNotEmpty() && !codesUiState.codesDetails.used && codesUiState.codesDetails.usable) {
+                        AsyncImage(
+                            model = Utility.qrCode(stringResource(R.string.url) + (codesUiState.codesDetails.code)),
+                            contentDescription = null,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                        )
+                    }
+                }
+                Spacer(modifier = Modifier.height(1.dp))
+                Text(codesUiState.codesDetails.code, modifier = Modifier.padding(10.dp))
+                val code = codesUiState.codesDetails
+                Column(
+                    modifier = modifier,
+                    verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_medium))
+                ) {
+                    Row {
+                        Text(stringResource(R.string.usable), modifier = Modifier.padding(10.dp))
+                        Switch(checked = code.usable,
+                            onCheckedChange = {
+                                onValueChange(code.copy(usable = it))
+                            })
+                    }
+                    Row {
+                        Text(stringResource(R.string.used), modifier = Modifier.padding(10.dp))
+                        Switch(checked = code.used,
+                            onCheckedChange = {
+                                onValueChange(code.copy(used = it))
+                            })
+                    }
+                    OutlinedTextField(
+                        value = code.userName,
+                        onValueChange = { onValueChange(code.copy(userName = it)) },
+                        label = { Text(stringResource(R.string.user_name)) },
+                        colors = OutlinedTextFieldDefaults.colors(
+                            focusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
+                            unfocusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
+                            disabledContainerColor = MaterialTheme.colorScheme.secondaryContainer,
+                        ),
+                        modifier = Modifier.fillMaxWidth(),
+                        singleLine = true
+                    )
+                }
+                Button(
+                    onClick = {
+                        coroutineScope.launch {
+                            viewModel.updateCode()
+                            if(viewModel.codesUiState.codesDetails.code.isNotEmpty()) {
+                                onSaveEnd(viewModel.codesUiState.codesDetails.eventId)
+                            } else {
+                                navigateBack()
+                            }
+                        }
+                    },
+                    shape = MaterialTheme.shapes.small,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text(text = stringResource(R.string.save_action))
+                }
+            }else{
+                Text(text = stringResource(R.string.code_empty))
             }
         }
-        Spacer(modifier = Modifier.height(1.dp))
-        Text(codesUiState.codesDetails.code,modifier = Modifier.padding(10.dp))
-        CodeEditForm(
-            codesDetails = codesUiState.codesDetails,
-            onValueChange = onValueChange,
-            modifier = Modifier.fillMaxWidth()
-        )
-        Button(
-            onClick = onSaveClick,
-            shape = MaterialTheme.shapes.small,
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Text(text = stringResource(R.string.save_action))
-        }
-    }
-}
-
-@Composable
-fun CodeEditForm(
-    codesDetails: CodesDetails,
-    onValueChange: (CodesDetails) -> Unit,
-    modifier: Modifier
-){
-    val code = codesDetails
-    Column(
-        modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_medium))
-    ) {
-        Row {
-            Text(stringResource(R.string.usable),modifier = Modifier.padding(10.dp))
-            Switch(checked = code.usable,
-                onCheckedChange = {
-                    onValueChange(code.copy(usable = it))
-                })
-        }
-        Row {
-            Text(stringResource(R.string.used),modifier = Modifier.padding(10.dp))
-            Switch(checked = code.used,
-                onCheckedChange = {
-                    onValueChange(code.copy(used = it))
-                })
-        }
-        OutlinedTextField(
-            value = code.userName,
-            onValueChange = { onValueChange(code.copy(userName = it)) },
-            label = { Text(stringResource(R.string.user_name)) },
-            colors = OutlinedTextFieldDefaults.colors(
-                focusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
-                unfocusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
-                disabledContainerColor = MaterialTheme.colorScheme.secondaryContainer,
-            ),
-            modifier = Modifier.fillMaxWidth(),
-            singleLine = true
-        )
     }
 }
