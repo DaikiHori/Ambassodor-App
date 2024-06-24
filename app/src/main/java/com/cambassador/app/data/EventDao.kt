@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.Flow
 interface EventDao {
 
     @Transaction
-    @Query("SELECT * from events ORDER BY name ASC")
+    @Query("SELECT * from events ORDER BY id ASC")
     fun getAllEvents(): Flow<List<EventAndCodes>>
 
     @Transaction

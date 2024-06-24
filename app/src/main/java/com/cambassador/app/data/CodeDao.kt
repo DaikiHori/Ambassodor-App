@@ -15,10 +15,13 @@ interface CodeDao {
     fun getAllCodes(): Flow<List<Code>>
 
     @Query("SELECT * from codes WHERE id = :id")
-    fun getCode(id: Int): Flow<Code>
+    fun getCodes(id: Int): Flow<Code>
 
     @Query("SELECT * from codes WHERE eventId = :eventId AND usable = TRUE AND used = FALSE ORDER BY id ASC LIMIT 1")
     fun getFirstByEventIdStream(eventId: Int): Flow<Code>
+
+    @Query("SELECT * from codes WHERE eventId = :eventId")
+    fun getAllCodesByEventId(eventId: Int): Flow<List<Code>>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insert(code: Code)

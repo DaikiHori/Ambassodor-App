@@ -6,7 +6,9 @@ class OfflineCodesRepository(private val codeDao: CodeDao) : CodesRepository {
 
     override fun getAllCodesStream(): Flow<List<Code>> = codeDao.getAllCodes()
 
-    override fun getCodeStream(id: Int): Flow<Code?> = codeDao.getCode(id)
+    override fun getCodesStream(id: Int): Flow<Code?> = codeDao.getCodes(id)
+
+    override fun getAllCodesByEventIdStream(id: Int): Flow<List<Code>> = codeDao.getAllCodesByEventId(id)
 
     override fun getFirstByEventIdStream(eventId: Int): Flow<Code?> = codeDao.getFirstByEventIdStream(eventId)
 

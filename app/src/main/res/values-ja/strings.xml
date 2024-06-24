@@ -2,6 +2,7 @@
     <string name="app_name">Ambassador App</string>
     <string name="attention">注意</string>
     <string name="back_button">戻る</string>
+    <string name="list">一覧</string>
     <string name="delete">削除</string>
     <string name="delete_question">本当に削除しますか？</string>
     <string name="no_event_description">イベントがありません。\n+ をタップして追加して下さい。</string>
@@ -12,7 +13,7 @@
     <string name="event_name_req">イベント名*</string>
     <string name="event_date_req">日付*</string>
     <string name="no">いいえ</string>
-    <string name="codes">コード*</string>
+    <string name="codes_input">コード*</string>
     <string name="code_long">プロモーションコード</string>
     <string name="code">コード</string>
     <string name="codes_count">%d 個</string>

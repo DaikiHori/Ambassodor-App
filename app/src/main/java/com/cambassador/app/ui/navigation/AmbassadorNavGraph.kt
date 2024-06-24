@@ -9,6 +9,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.cambassador.app.ui.codes.CodesDestination
 import com.cambassador.app.ui.codes.CodesScreen
+import com.cambassador.app.ui.codes_in_event.CodesDetailsDestination
+import com.cambassador.app.ui.codes_in_event.CodesDetailsScreen
 import com.cambassador.app.ui.home.HomeDestination
 import com.cambassador.app.ui.home.HomeScreen
 import com.cambassador.app.ui.event.EventDetailsDestination
@@ -38,6 +40,7 @@ fun AmbassadorNavHost(
                 navigateToEventEntry = { navController.navigate(EventEntryDestination.route) },
                 navigateToEventEdit = { navController.navigate("${EventEditDestination.route}/$it")},
                 navigateToCodes = { navController.navigate("${CodesDestination.route}/$it")},
+                navigateToCodesDetails = { navController.navigate("${CodesDetailsDestination.route}/$it")},
                 onNavigateBack = { navController.popBackStack(HomeDestination.route,inclusive = false) }
             )
         }
@@ -80,6 +83,17 @@ fun AmbassadorNavHost(
                 navigateBack = { navController.popBackStack(HomeDestination.route,inclusive = false) },
                 onNavigateUp = { navController.popBackStack(HomeDestination.route,inclusive = false) },
                 onSaveEnd =  { navController.navigate("${CodesDestination.route}/$it")}
+            )
+        }
+        composable(
+            route = CodesDetailsDestination.routeWithArgs,
+            arguments = listOf(navArgument(CodesDetailsDestination.eventIdArg) {
+                type = NavType.IntType
+            })
+        ) {
+            CodesDetailsScreen(
+                navigateBack = { navController.popBackStack(HomeDestination.route,inclusive = false) },
+                onNavigateUp = { navController.popBackStack(HomeDestination.route,inclusive = false) }
             )
         }
     }

@@ -57,6 +57,7 @@ fun HomeScreen(
     navigateToEventEntry: () -> Unit,
     navigateToEventEdit: (Int) -> Unit,
     navigateToCodes: (Int) -> Unit,
+    navigateToCodesDetails: (Int) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = viewModel(factory = AppViewModelProvider.Factory),
     onNavigateBack: () -> Unit
@@ -94,6 +95,7 @@ fun HomeScreen(
             eventList = homeUiState.eventList,
             navigateToCodes = navigateToCodes,
             navigateToEventEdit = navigateToEventEdit,
+            navigateToCodesDetails = navigateToCodesDetails,
             modifier = modifier.fillMaxSize(),
             contentPadding = innerPadding
         )
@@ -105,6 +107,7 @@ private fun HomeBody(
     eventList: List<EventAndCodes>,
     navigateToCodes: (Int) -> Unit,
     navigateToEventEdit: (Int) -> Unit,
+    navigateToCodesDetails: (Int) -> Unit,
     modifier: Modifier = Modifier,
     contentPadding: PaddingValues = PaddingValues(0.dp),
 ) {
@@ -124,6 +127,7 @@ private fun HomeBody(
                 eventList = eventList,
                 navigateToCodes = navigateToCodes ,
                 navigateToEventEdit = navigateToEventEdit,
+                navigateToCodesDetails = navigateToCodesDetails,
                 contentPadding = contentPadding,
                 modifier = Modifier.padding(horizontal = dimensionResource(id = R.dimen.padding_small))
             )
@@ -136,6 +140,7 @@ private fun EventList(
     eventList: List<EventAndCodes>,
     navigateToCodes: (Int) -> Unit,
     navigateToEventEdit: (Int) -> Unit,
+    navigateToCodesDetails: (Int) -> Unit,
     contentPadding: PaddingValues,
     modifier: Modifier = Modifier
 ) {
@@ -144,64 +149,56 @@ private fun EventList(
         contentPadding = contentPadding
     ) {
         items(items = eventList, key = { it.event.id }) { event ->
-            EventEntry(
-                event = event,
-                navigateToCodes = navigateToCodes,
-                navigateToEventEdit = navigateToEventEdit,
-                modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_small))
-            )
-        }
-    }
-}
-
-@Composable
-private fun EventEntry(
-    event: EventAndCodes,
-    navigateToCodes: (Int) -> Unit,
-    navigateToEventEdit: (Int) -> Unit,
-    modifier: Modifier = Modifier
-) {
-    Card(
-        modifier = modifier, elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
-    ) {
-        Column(
-            modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_large)),
-            verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_small))
-        ) {
-            Row(
-                modifier = Modifier.fillMaxWidth()
+            Card(
+                modifier = modifier, elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
             ) {
-                Column {
-                    Text(
-                        text = event.event.name,
-                        style = MaterialTheme.typography.titleLarge,
-                    )
+                Column(
+                    modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_large)),
+                    verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_small))
+                ) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Column {
+                            Text(
+                                text = event.event.name,
+                                style = MaterialTheme.typography.titleLarge,
+                            )
+                            Spacer(Modifier.weight(1f))
+                            Text(
+                                text = Utility.dateToString(event.event.date),
+                                style = MaterialTheme.typography.titleMedium
+                            )
+                        }
+                        Spacer(Modifier.weight(1f))
+                        Text(
+                            text = event.codes.count{ !it.used && it.usable }.toString() + "/" + event.codes.count().toString(),
+                            style = MaterialTheme.typography.titleMedium
+                        )
+                    }
                     Spacer(Modifier.weight(1f))
-                    Text(
-                        text = Utility.dateToString(event.event.date),
-                        style = MaterialTheme.typography.titleMedium
-                    )
-                }
-                Spacer(Modifier.weight(1f))
-                Text(
-                    text = event.codes.count{ !it.used && it.usable }.toString() + "/" + event.codes.count().toString(),
-                    style = MaterialTheme.typography.titleMedium
-                )
-                Spacer(Modifier.weight(1f))
-
-                Button(
-                    onClick = { navigateToEventEdit(event.event.id) },
-                    shape = MaterialTheme.shapes.small
-                ) {
-                    Text(text = stringResource(R.string.edit_action))
-                }
-
-                Spacer(Modifier.weight(1f))
-                Button(
-                    onClick = { navigateToCodes(event.event.id) },
-                    shape = MaterialTheme.shapes.small
-                ) {
-                    Text(text = stringResource(R.string.code))
+                    Row {
+                        Button(
+                            onClick = { navigateToEventEdit(event.event.id) },
+                            shape = MaterialTheme.shapes.small
+                        ) {
+                            Text(text = stringResource(R.string.edit_action))
+                        }
+//                        Spacer(Modifier.weight(1f))
+//                        Button(
+//                            onClick = { navigateToCodesDetails(event.event.id) },
+//                            shape = MaterialTheme.shapes.small
+//                        ) {
+//                            Text(text = stringResource(R.string.list))
+//                        }
+                        Spacer(Modifier.weight(1f))
+                        Button(
+                            onClick = { navigateToCodes(event.event.id) },
+                            shape = MaterialTheme.shapes.small
+                        ) {
+                            Text(text = stringResource(R.string.code))
+                        }
+                    }
                 }
             }
         }

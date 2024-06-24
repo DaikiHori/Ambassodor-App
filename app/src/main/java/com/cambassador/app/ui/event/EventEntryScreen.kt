@@ -142,7 +142,7 @@ fun EventEntryBody(
             OutlinedTextField(
                 value = eventDetails.code,
                 onValueChange = { onValueChange(eventDetails.copy(code = it)) },
-                label = { Text(stringResource(R.string.codes)) },
+                label = { Text(stringResource(R.string.codes_input)) },
                 colors = OutlinedTextFieldDefaults.colors(
                     focusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
                     unfocusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,

@@ -3,6 +3,7 @@
     <string name="attention">Attention</string>
     <string name="back_button">Back</string>
     <string name="delete">Delete</string>
+    <string name="list">List</string>
     <string name="delete_question">Are you sure you want to delete?</string>
     <string name="no_event_description">No events in Database.\nTap + to add.</string>
     <string name="edit_event_title">Edit Event</string>
@@ -12,7 +13,7 @@
     <string name="event_name_req">Name*</string>
     <string name="event_date_req">Date*</string>
     <string name="no">No</string>
-    <string name="codes">codes*</string>
+    <string name="codes_input">codes*</string>
     <string name="code">code</string>
     <string name="code_long">code</string>
     <string name="codes_count">%d codes</string>
