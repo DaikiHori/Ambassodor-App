@@ -30,5 +30,7 @@
 
     <string name="user_name">ユーザ名</string>
     <string name="usable">使用可</string>
+    <string name="usable_false">使用不可</string>
     <string name="used">使用済み</string>
+    <string name="used_false">未使用</string>
 </resources>

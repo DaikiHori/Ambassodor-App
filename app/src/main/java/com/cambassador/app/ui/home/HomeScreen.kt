@@ -184,13 +184,13 @@ private fun EventList(
                         ) {
                             Text(text = stringResource(R.string.edit_action))
                         }
-//                        Spacer(Modifier.weight(1f))
-//                        Button(
-//                            onClick = { navigateToCodesDetails(event.event.id) },
-//                            shape = MaterialTheme.shapes.small
-//                        ) {
-//                            Text(text = stringResource(R.string.list))
-//                        }
+                        Spacer(Modifier.weight(1f))
+                        Button(
+                            onClick = { navigateToCodesDetails(event.event.id) },
+                            shape = MaterialTheme.shapes.small
+                        ) {
+                            Text(text = stringResource(R.string.list))
+                        }
                         Spacer(Modifier.weight(1f))
                         Button(
                             onClick = { navigateToCodes(event.event.id) },

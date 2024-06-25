@@ -1,6 +1,7 @@
 package com.cambassador.app.ui.codes_in_event
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -80,29 +81,37 @@ fun CodesBody(
     modifier: Modifier,
     contentPadding: PaddingValues = PaddingValues(0.dp)
 ){
-    Text(text=event.name,Modifier.padding(contentPadding))
-    Spacer(modifier = Modifier.height(5.dp))
-    LazyColumn(
-        modifier = Modifier.padding(horizontal = dimensionResource(id = R.dimen.padding_small)),
-        contentPadding = contentPadding
-    ) {
-        items(items = codeList, key = { it.id }) {
-            Card(
-                modifier = modifier,
-                elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
-            ) {
-                Column(
-                    modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_large)),
-                    verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_small))
+    Box(modifier = Modifier.padding(contentPadding)) {
+        Box(modifier = modifier) {
+            Text(text = event.name, modifier = modifier.padding(5.dp))
+        }
+        LazyColumn(
+            modifier = Modifier.padding(horizontal = dimensionResource(id = R.dimen.padding_small)),
+            contentPadding = PaddingValues(5.dp,50.dp,5.dp,5.dp)
+        ) {
+            items(items = codeList, key = { it.id }) {
+                Card(
+                    modifier = modifier,
+                    elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
                 ) {
-                    Row() {
-                        Text(text = it.code)
-                        Spacer(modifier = Modifier.width(10.dp))
-                        Text(text = it.usable.toString())
-                        Spacer(modifier = Modifier.width(10.dp))
-                        Text(text = it.used.toString())
+                    Column(
+                        modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_large)),
+                        verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_small))
+                    ) {
+                        Row() {
+                            Text(text = it.code)
+                            Spacer(modifier = Modifier.width(10.dp))
+                            Text(text = if(it.usable){
+                                stringResource(R.string.usable)}else{
+                                stringResource(R.string.usable_false)})
+                            Spacer(modifier = Modifier.width(10.dp))
+                            Text(text = if(it.used){
+                                stringResource(R.string.used)}else{
+                                stringResource(R.string.used_false)})
+                        }
                     }
                 }
+                Spacer(modifier = Modifier.padding(5.dp))
             }
         }
     }

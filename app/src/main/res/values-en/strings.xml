@@ -30,5 +30,7 @@
 
     <string name="user_name">User Name</string>
     <string name="usable">Usable</string>
+    <string name="usable_false">Unavailable</string>
     <string name="used">Used</string>
+    <string name="used_false">Unused</string>
 </resources>
