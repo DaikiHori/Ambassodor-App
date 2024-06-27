@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Divider
@@ -30,6 +31,7 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.room.util.splitToIntList
 import com.cambassador.app.AmbassadorTopAppBar
 import com.cambassador.app.R
 import com.cambassador.app.data.Code
@@ -85,7 +87,19 @@ fun CodesBody(
     contentPadding: PaddingValues = PaddingValues(0.dp)
 ){
     Column(modifier = Modifier.padding(contentPadding)) {
-        Text(text = event.name, modifier = Modifier.padding(5.dp).height(25.dp))
+        Column {
+            Text(text = event.name, modifier = Modifier
+                .padding(5.dp)
+                .height(25.dp))
+            Row{
+                Spacer(modifier = Modifier.width(3.dp))
+                Text(text = stringResource(R.string.usable))
+                Spacer(modifier = Modifier.width(3.dp))
+                Text(text = stringResource(R.string.used))
+                Spacer(modifier = Modifier.width(3.dp))
+                Text(text = stringResource(R.string.user_name))
+            }
+        }
         Divider(color = Color.Gray)
         LazyColumn(
             modifier = Modifier.padding(horizontal = dimensionResource(id = R.dimen.padding_small)),
@@ -100,16 +114,29 @@ fun CodesBody(
                         modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_large)),
                         verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_small))
                     ) {
-                        Row() {
-                            Text(text = it.code)
-                            Spacer(modifier = Modifier.width(10.dp))
-                            Text(text = if(it.usable){
-                                stringResource(R.string.usable)}else{
-                                stringResource(R.string.usable_false)})
-                            Spacer(modifier = Modifier.width(10.dp))
-                            Text(text = if(it.used){
-                                stringResource(R.string.used)}else{
-                                stringResource(R.string.used_false)})
+                        Column() {
+                            SelectionContainer {
+                                Text(text = it.code)
+                            }
+                            Row {
+                                Text(
+                                    text = if (it.usable) {
+                                        stringResource(R.string.usable)
+                                    } else {
+                                        stringResource(R.string.usable_false)
+                                    }
+                                )
+                                Spacer(modifier = Modifier.width(10.dp))
+                                Text(
+                                    text = if (it.used) {
+                                        stringResource(R.string.used)
+                                    } else {
+                                        stringResource(R.string.used_false)
+                                    }
+                                )
+                                Spacer(modifier = Modifier.width(10.dp))
+                                Text(text = it.userName)
+                            }
                         }
                     }
                 }

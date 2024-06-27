@@ -17,7 +17,7 @@ interface CodeDao {
     @Query("SELECT * from codes WHERE id = :id")
     fun getCodes(id: Int): Flow<Code>
 
-    @Query("SELECT * from codes WHERE eventId = :eventId AND usable = TRUE AND used = FALSE ORDER BY id ASC LIMIT 1")
+    @Query("SELECT * from codes WHERE eventId = :eventId AND usable = 1 AND used = 0 ORDER BY id ASC LIMIT 1")
     fun getFirstByEventIdStream(eventId: Int): Flow<Code>
 
     @Query("SELECT * from codes WHERE eventId = :eventId")
