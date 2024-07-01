@@ -1,8 +1,5 @@
 package com.cambassador.app.ui.codes_in_event
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -10,15 +7,11 @@ import com.cambassador.app.data.Code
 import com.cambassador.app.data.CodesRepository
 import com.cambassador.app.data.EventsRepository
 import com.cambassador.app.ui.event.EventDetailsUiState
-import com.cambassador.app.ui.event.EventDetailsViewModel
-import com.cambassador.app.ui.event.EventDetailsViewModel.Companion
-import com.cambassador.app.ui.event.EventUiState
 import com.cambassador.app.ui.event.toEventDetails
-import com.cambassador.app.ui.event.toEventUiState
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.filterNotNull
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
@@ -40,22 +33,31 @@ class CodesDetailsViewModel(
                 initialValue = EventDetailsUiState()
             )
 
+    private var codesUiState = MutableStateFlow<List<Code>?>(null)
+    val displayData: StateFlow<List<Code>?> = codesUiState
 
-    val codesUiState: StateFlow<CodesDetailsUiState> =
-        codesRepository.getAllCodesByEventIdStream(eventId)
-            .filterNotNull()
-            .map {
-                CodesDetailsUiState(it)
-            }.stateIn(
-                scope = viewModelScope,
-                started = SharingStarted.WhileSubscribed(TIMEOUT_MILLIS),
-                initialValue = CodesDetailsUiState()
-            )
+    init{
+        viewModelScope.launch {
+            codesRepository.getAllCodesByEventIdStream(eventId)
+                .collect{ data -> codesUiState.value = data }
+        }
+    }
+
     companion object {
         private const val TIMEOUT_MILLIS = 5_000L
     }
-}
 
-data class CodesDetailsUiState(
-    val codeList: List<Code> = listOf()
-)
+    fun updateCode(id: Int,data: Code){
+        val update = codesUiState.value?.map { if (it.id == id) data else it }
+        codesUiState.value = update
+    }
+
+    fun saveCode(codesId :Int) {
+        val data = codesUiState.value?.find{it.id == codesId}
+        if (data != null){
+            viewModelScope.launch {
+                codesRepository.updateCode(data)
+            }
+        }
+    }
+}
