@@ -55,7 +55,7 @@ fun CodesDetailsScreen(
     viewModel: CodesDetailsViewModel = viewModel(factory = AppViewModelProvider.Factory),
     onNavigateUp: () -> Boolean
 ){
-    val codes by viewModel.displayData.collectAsState()
+    val codes by viewModel.displayCodes.collectAsState()
     val eventUiState by viewModel.eventUiState.collectAsState()
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
     Scaffold(

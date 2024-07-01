@@ -33,13 +33,13 @@ class CodesDetailsViewModel(
                 initialValue = EventDetailsUiState()
             )
 
-    private var codesUiState = MutableStateFlow<List<Code>?>(null)
-    val displayData: StateFlow<List<Code>?> = codesUiState
+    private var codesState = MutableStateFlow<List<Code>?>(null)
+    val displayCodes: StateFlow<List<Code>?> = codesState
 
     init{
         viewModelScope.launch {
             codesRepository.getAllCodesByEventIdStream(eventId)
-                .collect{ data -> codesUiState.value = data }
+                .collect{ data -> codesState.value = data }
         }
     }
 
@@ -48,12 +48,12 @@ class CodesDetailsViewModel(
     }
 
     fun updateCode(id: Int,data: Code){
-        val update = codesUiState.value?.map { if (it.id == id) data else it }
-        codesUiState.value = update
+        val update = codesState.value?.map { if (it.id == id) data else it }
+        codesState.value = update
     }
 
     fun saveCode(codesId :Int) {
-        val data = codesUiState.value?.find{it.id == codesId}
+        val data = codesState.value?.find{it.id == codesId}
         if (data != null){
             viewModelScope.launch {
                 codesRepository.updateCode(data)
