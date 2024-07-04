@@ -82,9 +82,6 @@ fun EventDetails.toCodes(): Code = Code(
 fun EventDetails.toEventAndCodes(): EventAndCodes = EventAndCodes(
 
 )
-fun Event.formatedDate(): String {
-    return NumberFormat.getCurrencyInstance().format(date)
-}
 
 fun Event.toEventUiState(isEntryValid: Boolean = false): EventUiState = EventUiState(
     eventDetails = this.toEventDetails(),

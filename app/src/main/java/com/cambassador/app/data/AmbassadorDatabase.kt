@@ -7,17 +7,21 @@ import androidx.room.RoomDatabase
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 
-class Migration2To3 : Migration(2,3) {
+class Migration3To4 : Migration(3,4) {
     override fun migrate(database: SupportSQLiteDatabase) {
-        database.execSQL("ALTER TABLE event ADD COLUMN url TEXT DEFAULT ''")
+        database.execSQL("CREATE TABLE users (" +
+                " id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                " name TEXT NOT NULL " +
+                ");")
     }
 }
 
-@Database(entities = [Event::class, Code::class], version = 3, exportSchema = false)
+@Database(entities = [Event::class, Code::class, User::class], version = 4, exportSchema = false)
 abstract class AmbassadorDatabase : RoomDatabase() {
 
     abstract fun eventDao(): EventDao
     abstract fun codeDao(): CodeDao
+    abstract fun userDao(): UserDao
 
     companion object {
         @Volatile
@@ -26,7 +30,7 @@ abstract class AmbassadorDatabase : RoomDatabase() {
         fun getDatabase(context: Context): AmbassadorDatabase {
             return Instance ?: synchronized(this) {
                 Room.databaseBuilder(context, AmbassadorDatabase::class.java, "ambassador_database")
-                    .addMigrations(Migration2To3())
+                    .addMigrations(Migration3To4())
                     .fallbackToDestructiveMigration()
                     .build()
                     .also { Instance = it }
