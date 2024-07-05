@@ -16,7 +16,7 @@ class Migration3To4 : Migration(3,4) {
     }
 }
 
-@Database(entities = [Event::class, Code::class, User::class], version = 4, exportSchema = false)
+@Database(entities = [Event::class, Code::class, User::class], version = 5, exportSchema = false)
 abstract class AmbassadorDatabase : RoomDatabase() {
 
     abstract fun eventDao(): EventDao

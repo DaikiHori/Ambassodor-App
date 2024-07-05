@@ -43,7 +43,8 @@ object AppViewModelProvider {
             CodesViewModel(
                 this.createSavedStateHandle(),
                 ambassadorApplication().container.eventsRepository,
-                ambassadorApplication().container.codesRepository
+                ambassadorApplication().container.codesRepository,
+                ambassadorApplication().container.usersRepository
             )
         }
 

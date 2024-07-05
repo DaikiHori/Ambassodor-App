@@ -47,7 +47,8 @@ fun UserEntryScreen(
             AmbassadorTopAppBar(
                 title = stringResource(UserEntryDestination.titleRes),
                 canNavigateBack = canNavigateBack,
-                navigateUp = onNavigateUp
+                navigateUp = onNavigateUp,
+                navigateToUser = {}
             )
         }
     ) { innerPadding ->

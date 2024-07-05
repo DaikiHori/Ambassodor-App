@@ -2,10 +2,13 @@ package com.cambassador.app.ui.users
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.calculateEndPadding
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.lazy.LazyColumn
@@ -51,7 +54,7 @@ fun UsersScreen(
     viewModel: UsersViewModel = viewModel(factory = AppViewModelProvider.Factory),
     onNavigateBack: () -> Unit,
     onNavigateUp: () -> Unit,
-    menu: Boolean = true
+    menu: String = "user"
 ){
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
     val users by viewModel.displayUsers.collectAsState()
@@ -61,7 +64,8 @@ fun UsersScreen(
                 title = stringResource(UsersDestination.titleRes),
                 canNavigateBack = true,
                 navigateUp = onNavigateUp,
-                menu = menu
+                menu = menu,
+                navigateToUser = {}
             )
         },
         floatingActionButton = {
@@ -99,7 +103,7 @@ fun UsersBody(
 ){
     if(userList != null && userList.isEmpty()){
         Text(
-            text = stringResource(R.string.no_event_description),
+            text = stringResource(R.string.users_empty),
             textAlign = TextAlign.Center,
             style = MaterialTheme.typography.titleLarge,
             modifier = Modifier.padding(contentPadding),
@@ -117,11 +121,14 @@ fun UsersBody(
                             modifier = modifier,
                             elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
                         ) {
-                            Text(text = "$listIndex: ")
-                            SelectionContainer {
-                                Text(text = it.name)
+                            Row(modifier = Modifier.padding(5.dp)) {
+                                Text(text = "$listIndex: ")
+                                SelectionContainer {
+                                    Text(text = it.name)
+                                }
                             }
                         }
+                        Spacer(Modifier.height(10.dp))
                     }
                 }
             }

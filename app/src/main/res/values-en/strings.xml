@@ -33,4 +33,6 @@
     <string name="usable_false">Unavailable</string>
     <string name="used">Used</string>
     <string name="used_false">Unused</string>
+
+    <string name="users_empty">No users in Database.\nTap + to add.</string>
 </resources>

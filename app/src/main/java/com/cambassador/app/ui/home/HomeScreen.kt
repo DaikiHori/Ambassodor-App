@@ -39,7 +39,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavController
 import com.cambassador.app.AmbassadorTopAppBar
 import com.cambassador.app.R
 import com.cambassador.app.data.EventAndCodes
@@ -62,7 +61,8 @@ fun HomeScreen(
     navigateToUsers: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = viewModel(factory = AppViewModelProvider.Factory),
-    onNavigateBack: () -> Unit
+    onNavigateBack: () -> Unit,
+    menu: String = "home"
 ) {
     val homeUiState by viewModel.homeUiState.collectAsState()
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
@@ -73,7 +73,9 @@ fun HomeScreen(
                 title = stringResource(HomeDestination.titleRes),
                 canNavigateBack = false,
                 scrollBehavior = scrollBehavior,
-                navigateUp = onNavigateBack
+                navigateUp = onNavigateBack,
+                navigateToUser = navigateToUsers,
+                menu = menu
             )
         },
         floatingActionButton = {
