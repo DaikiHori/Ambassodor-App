@@ -21,7 +21,7 @@ interface UserDao {
     fun getAllUsersByName(name: String): Flow<List<User>>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insert(user: User)
+    suspend fun insert(user: User): Long
 
     @Update
     suspend fun update(user: User)

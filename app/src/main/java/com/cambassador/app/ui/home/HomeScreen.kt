@@ -59,6 +59,7 @@ fun HomeScreen(
     navigateToEventEdit: (Int) -> Unit,
     navigateToCodes: (Int) -> Unit,
     navigateToCodesDetails: (Int) -> Unit,
+    navigateToUsers: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = viewModel(factory = AppViewModelProvider.Factory),
     onNavigateBack: () -> Unit

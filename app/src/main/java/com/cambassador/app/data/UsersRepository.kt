@@ -9,7 +9,7 @@ interface UsersRepository {
 
     fun getAllUsersByNameStream(name: String): Flow<List<User>>
 
-    suspend fun insertUser(user: User)
+    suspend fun insertUser(user: User): Long
 
     suspend fun updateUser(user: User)
 

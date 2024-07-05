@@ -19,6 +19,11 @@ import com.cambassador.app.ui.event.EventEditDestination
 import com.cambassador.app.ui.event.EventEditScreen
 import com.cambassador.app.ui.event.EventEntryDestination
 import com.cambassador.app.ui.event.EventEntryScreen
+import com.cambassador.app.ui.users.UserDetails
+import com.cambassador.app.ui.users.UserEntryDestination
+import com.cambassador.app.ui.users.UserEntryScreen
+import com.cambassador.app.ui.users.UsersDestination
+import com.cambassador.app.ui.users.UsersScreen
 
 @Composable
 fun AmbassadorNavHost(
@@ -41,15 +46,18 @@ fun AmbassadorNavHost(
                 navigateToEventEdit = { navController.navigate("${EventEditDestination.route}/$it")},
                 navigateToCodes = { navController.navigate("${CodesDestination.route}/$it")},
                 navigateToCodesDetails = { navController.navigate("${CodesDetailsDestination.route}/$it")},
+                navigateToUsers = { navController.navigate(UsersDestination.route) },
                 onNavigateBack = { navController.popBackStack(HomeDestination.route,inclusive = false) }
             )
         }
+
         composable(route = EventEntryDestination.route) {
             EventEntryScreen(
                 navigateBack = { navController.popBackStack() },
                 onNavigateUp = { navController.navigateUp() }
             )
         }
+
         composable(
             route = EventDetailsDestination.routeWithArgs,
             arguments = listOf(navArgument(EventDetailsDestination.eventIdArg) {
@@ -62,6 +70,7 @@ fun AmbassadorNavHost(
                 navigateBack = { navController.navigateUp() }
             )
         }
+
         composable(
             route = EventEditDestination.routeWithArgs,
             arguments = listOf(navArgument(EventEditDestination.eventIdArg) {
@@ -73,6 +82,7 @@ fun AmbassadorNavHost(
                 onNavigateUp = { navController.navigateUp() }
             )
         }
+
         composable(
             route = CodesDestination.routeWithArgs,
             arguments = listOf(navArgument(CodesDestination.eventIdArg) {
@@ -85,6 +95,7 @@ fun AmbassadorNavHost(
                 onSaveEnd =  { navController.navigate("${CodesDestination.route}/$it")}
             )
         }
+
         composable(
             route = CodesDetailsDestination.routeWithArgs,
             arguments = listOf(navArgument(CodesDetailsDestination.eventIdArg) {
@@ -94,6 +105,21 @@ fun AmbassadorNavHost(
             CodesDetailsScreen(
                 navigateBack = { navController.popBackStack(HomeDestination.route,inclusive = false) },
                 onNavigateUp = { navController.popBackStack(HomeDestination.route,inclusive = false) }
+            )
+        }
+
+        composable(route = UsersDestination.route){
+            UsersScreen(
+                navigateToUserEntry = { navController.navigate(UserEntryDestination.route) },
+                onNavigateUp = { navController.navigateUp() },
+                onNavigateBack = { navController.popBackStack() }
+            )
+        }
+
+        composable(route = UserEntryDestination.route){
+            UserEntryScreen(
+                navigateBack = { navController.navigateUp() },
+                onNavigateUp = { navController.popBackStack() }
             )
         }
     }
