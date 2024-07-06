@@ -22,7 +22,7 @@ class UserEntryViewModel(
         if(validateInput()){
             try{
                 val names = userUiState.userDetails.name
-                    .replace("\"","")
+                    .replace("\"","").replace(" ","")
                     .replace("\r",",").replace("\n",",")
                     .split(",")
                 for(n in names){

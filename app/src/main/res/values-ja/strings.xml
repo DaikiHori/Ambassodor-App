@@ -35,5 +35,5 @@
     <string name="used_false">未使用</string>
 
 
-    <string name="users_empty">ユーザーがいません。\n + をタップして追加して下さい。</string>
+    <string name="users_empty">ユーザーがいません。\n+ をタップして追加して下さい。</string>
 </resources>

@@ -28,6 +28,7 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.dimensionResource
@@ -101,15 +102,18 @@ fun UsersBody(
     modifier: Modifier,
     contentPadding: PaddingValues = PaddingValues(0.dp)
 ){
-    if(userList != null && userList.isEmpty()){
-        Text(
-            text = stringResource(R.string.users_empty),
-            textAlign = TextAlign.Center,
-            style = MaterialTheme.typography.titleLarge,
-            modifier = Modifier.padding(contentPadding),
-        )
-    }else {
-        Column(modifier = Modifier.padding(contentPadding)) {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier.padding(contentPadding)
+    ) {
+        if (userList != null && userList.isEmpty()) {
+            Text(
+                text = stringResource(R.string.users_empty),
+                textAlign = TextAlign.Center,
+                style = MaterialTheme.typography.titleLarge,
+                modifier = Modifier.padding(contentPadding),
+            )
+        } else {
             LazyColumn(
                 modifier = Modifier.padding(horizontal = dimensionResource(id = R.dimen.padding_small)),
                 contentPadding = PaddingValues(5.dp, 50.dp, 5.dp, 5.dp)
