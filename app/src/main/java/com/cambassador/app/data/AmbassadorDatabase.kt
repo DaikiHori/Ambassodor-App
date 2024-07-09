@@ -11,7 +11,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 class Migration3To5 : Migration(3,5) {
     override fun migrate(database: SupportSQLiteDatabase) {
         database.execSQL("CREATE TABLE users (" +
-                " id INT PRIMARY KEY AUTOINCREMENT, " +
+                " id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " +
                 " name TEXT NOT NULL " +
                 ");")
     }
