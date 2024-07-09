@@ -11,7 +11,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 class Migration3To5 : Migration(3,5) {
     override fun migrate(database: SupportSQLiteDatabase) {
         database.execSQL("CREATE TABLE users (" +
-                " id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                " id INT PRIMARY KEY AUTOINCREMENT, " +
                 " name TEXT NOT NULL " +
                 ");")
     }
@@ -36,6 +36,7 @@ abstract class AmbassadorDatabase : RoomDatabase() {
             return Instance ?: synchronized(this) {
                 Room.databaseBuilder(context, AmbassadorDatabase::class.java, "ambassador_database")
                     .fallbackToDestructiveMigration()
+                    .addMigrations(Migration3To5())
                     .build()
                     .also { Instance = it }
             }
