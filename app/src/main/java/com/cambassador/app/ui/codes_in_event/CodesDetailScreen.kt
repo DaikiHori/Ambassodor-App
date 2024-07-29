@@ -15,13 +15,18 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -103,7 +108,7 @@ fun CodesBody(
             contentPadding = PaddingValues(5.dp,50.dp,5.dp,5.dp)
         ) {
             codeList?.let { data ->
-                itemsIndexed(data, key = { _, item -> item.id }) { index, it ->
+                itemsIndexed(data, key = { _, item -> item.id }) { index, code ->
                     val listIndex = index + 1
                     Card(
                         modifier = modifier,
@@ -117,23 +122,23 @@ fun CodesBody(
                                 Row {
                                     Text(text = "$listIndex: ")
                                     SelectionContainer {
-                                        Text(text = it.code)
+                                        Text(text = code.code)
                                     }
                                 }
                                 Row(modifier = Modifier.fillMaxWidth()) {
                                     Row(modifier = Modifier.weight(0.5f)) {
                                         Checkbox(
-                                            checked = it.usable,
+                                            checked = code.usable,
                                             onCheckedChange = { isChecked ->
                                                 viewModel.updateCode(
-                                                    it.id,
-                                                    it.copy(usable = isChecked)
+                                                    code.id,
+                                                    code.copy(usable = isChecked)
                                                 )
-                                                viewModel.saveCode(it.id)
+                                                viewModel.saveCode(code.id)
                                             }
                                         )
                                         Text(
-                                            text = if (it.usable) {
+                                            text = if (code.usable) {
                                                 stringResource(R.string.usable)
                                             } else {
                                                 stringResource(R.string.usable_false)
@@ -144,17 +149,17 @@ fun CodesBody(
                                     Spacer(modifier = Modifier.width(10.dp))
                                     Row(modifier = Modifier.weight(0.5f)) {
                                         Checkbox(
-                                            checked = it.used,
+                                            checked = code.used,
                                             onCheckedChange = { isChecked ->
                                                 viewModel.updateCode(
-                                                    it.id,
-                                                    it.copy(used = isChecked)
+                                                    code.id,
+                                                    code.copy(used = isChecked)
                                                 )
-                                                viewModel.saveCode(it.id)
+                                                viewModel.saveCode(code.id)
                                             }
                                         )
                                         Text(
-                                            text = if (it.used) {
+                                            text = if (code.used) {
                                                 stringResource(R.string.used)
                                             } else {
                                                 stringResource(R.string.used_false)
@@ -163,7 +168,30 @@ fun CodesBody(
                                         )
                                     }
                                 }
-                                Text(text = it.userName)
+                                Row{
+                                    OutlinedTextField(
+                                        value = code.userName,
+                                        onValueChange = {
+                                            viewModel.updateCode(code.id,code.copy(userName = it))
+                                        },
+                                        modifier = Modifier
+                                            .fillMaxWidth(0.7f)
+                                            .padding(16.dp),
+                                        placeholder = {
+                                            Text(stringResource(R.string.user_name))
+                                        },
+                                        label = { Text(stringResource(R.string.user_name)) },
+                                        colors = OutlinedTextFieldDefaults.colors(
+                                            focusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
+                                            unfocusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
+                                            disabledContainerColor = MaterialTheme.colorScheme.secondaryContainer,
+                                        ),
+                                        singleLine = true
+                                    )
+                                    Button(modifier = Modifier.padding(3.dp), onClick = { viewModel.saveCode(code.id) }) {
+                                        Text(text = stringResource(R.string.save_action))
+                                    }
+                                }
                             }
                         }
                     }

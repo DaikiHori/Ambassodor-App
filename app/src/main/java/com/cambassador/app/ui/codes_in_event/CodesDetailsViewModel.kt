@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.cambassador.app.data.Code
 import com.cambassador.app.data.CodesRepository
 import com.cambassador.app.data.EventsRepository
+import com.cambassador.app.data.UsersRepository
 import com.cambassador.app.ui.event.EventDetailsUiState
 import com.cambassador.app.ui.event.toEventDetails
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -19,7 +20,8 @@ import kotlinx.coroutines.launch
 class CodesDetailsViewModel(
     savedStateHandle: SavedStateHandle,
     private val eventsRepository: EventsRepository,
-    private val codesRepository: CodesRepository
+    private val codesRepository: CodesRepository,
+    private val usersRepository: UsersRepository
 ) : ViewModel() {
     private val eventId: Int = checkNotNull(savedStateHandle[CodesDetailsDestination.eventIdArg])
     val eventUiState: StateFlow<EventDetailsUiState> =
