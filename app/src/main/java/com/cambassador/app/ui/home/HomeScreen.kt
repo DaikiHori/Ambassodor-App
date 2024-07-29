@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
@@ -163,7 +164,7 @@ private fun EventList(
                     Row(
                         modifier = Modifier.fillMaxWidth()
                     ) {
-                        Column {
+                        Column(modifier = Modifier.fillMaxWidth(0.7f)) {
                             Text(
                                 text = event.event.name,
                                 style = MaterialTheme.typography.titleLarge,
