@@ -8,18 +8,20 @@ import androidx.room.RoomDatabase
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 
-class Migration3To5 : Migration(3,5) {
+class Migration5To6 : Migration(5,6) {
     override fun migrate(database: SupportSQLiteDatabase) {
-        database.execSQL("CREATE TABLE users (" +
+        database.execSQL("CREATE TABLE users2 (" +
                 " id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " +
-                " name TEXT NOT NULL " +
+                " name TEXT NOT NULL UNIQUE " +
                 ");")
+        database.execSQL("DROP TABLE users")
+        database.execSQL("ALTER TABLE users2 RENAME TO users")
     }
 }
 
 @Database(
     entities = [Event::class, Code::class, User::class],
-    version = 5,
+    version = 6,
     exportSchema = false
 )
 abstract class AmbassadorDatabase : RoomDatabase() {
@@ -35,8 +37,8 @@ abstract class AmbassadorDatabase : RoomDatabase() {
         fun getDatabase(context: Context): AmbassadorDatabase {
             return Instance ?: synchronized(this) {
                 Room.databaseBuilder(context, AmbassadorDatabase::class.java, "ambassador_database")
+                    .addMigrations(Migration5To6())
                     .fallbackToDestructiveMigration()
-                    .addMigrations(Migration3To5())
                     .build()
                     .also { Instance = it }
             }
