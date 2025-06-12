@@ -1,0 +1,41 @@
+<resources>
+    <string name="app_name">Ambassador App</string>
+    <string name="attention">注意</string>
+    <string name="back_button">戻る</string>
+    <string name="list">一覧</string>
+    <string name="delete">削除</string>
+    <string name="delete_question">本当に削除しますか？</string>
+    <string name="no_event_description">イベントがありません。\n+ をタップして追加して下さい。</string>
+    <string name="edit_event_title">イベント変更</string>
+    <string name="event">イベント</string>
+    <string name="event_detail_title">イベント詳細</string>
+    <string name="event_entry_title">イベント追加</string>
+    <string name="event_name_req">イベント名*</string>
+    <string name="event_date_req">日付*</string>
+    <string name="no">いいえ</string>
+    <string name="codes_input">コード*</string>
+    <string name="code_long">プロモーションコード</string>
+    <string name="code">コード</string>
+    <string name="codes_count">%d 個</string>
+    <string name="save_action">保存</string>
+    <string name="edit_action">編集</string>
+    <string name="yes">はい</string>
+    <string name="required_fields">*必須項目</string>
+    <string name="date_pattern">yyyy/MM/dd</string>
+    <string name="campfile_url">Campfire</string>
+
+    <string name="code_viewer">QRコード</string>
+    <string name="url">https://store.pokemongolive.com/offer-redemption?passcode=</string>
+    <string name="code_empty">コードを使い切りました。トップバーの戻るボタンで戻ってください。</string>
+
+    <string name="user_name">ユーザ名</string>
+    <string name="usable">使用可</string>
+    <string name="usable_false">使用不可</string>
+    <string name="used">使用済み</string>
+    <string name="used_false">未使用</string>
+
+
+    <string name="users_empty">ユーザーがいません。\n+ をタップして追加して下さい。</string>
+    <string name="saved">保存しました。</string>
+
+</resources>

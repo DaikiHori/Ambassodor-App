@@ -1,0 +1,42 @@
+<resources>
+    <string name="app_name">Ambassador App</string>
+    <string name="attention">Attention</string>
+    <string name="back_button">Back</string>
+    <string name="delete">Delete</string>
+    <string name="list">List</string>
+    <string name="delete_question">Are you sure you want to delete?</string>
+    <string name="no_event_description">No events in Database.\nTap + to add.</string>
+
+    <string name="edit_event_title">Edit Event</string>
+    <string name="event">Event</string>
+    <string name="event_detail_title">Event Details</string>
+    <string name="event_entry_title">Add Event</string>
+    <string name="event_name_req">Name*</string>
+    <string name="event_date_req">Date*</string>
+    <string name="codes_input">codes*</string>
+    <string name="code">code</string>
+    <string name="code_long">code</string>
+    <string name="codes_count">%d codes</string>
+
+    <string name="save_action">Save</string>
+    <string name="edit_action">Edit</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="required_fields">*required fields</string>
+    <string name="date_pattern">MMM d, yyyy</string>
+    <string name="campfile_url">Campfire</string>
+
+    <string name="code_viewer">Code Viewer</string>
+    <string name="url">https://store.pokemongolive.com/offer-redemption?passcode=</string>
+    <string name="code_empty">I\'ve used up this code. Please return using the back button on the top bar.</string>
+
+    <string name="user_name">User Name</string>
+    <string name="usable">Usable</string>
+    <string name="usable_false">Unavailable</string>
+    <string name="used">Used</string>
+    <string name="used_false">Unused</string>
+
+    <string name="users_empty">No users in Database.\nTap + to add.</string>
+    <string name="saved">Saved.</string>
+
+</resources>
