@@ -6,7 +6,7 @@ interface EventsRepository {
 
     fun getAllEventsStream(): Flow<List<EventAndCodes>>
 
-    fun getAllEventsWithCountStream(): Flow<List<EventAndCodes>>
+    fun getAllEventsWithCodeCountStream(): Flow<List<Event>>
 
     fun getEventStream(id: Int): Flow<EventAndCodes?>
 

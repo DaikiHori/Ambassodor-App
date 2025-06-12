@@ -36,4 +36,6 @@
 
 
     <string name="users_empty">ユーザーがいません。\n+ をタップして追加して下さい。</string>
+    <string name="saved">保存しました。</string>
+
 </resources>

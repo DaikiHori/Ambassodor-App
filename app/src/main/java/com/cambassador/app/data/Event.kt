@@ -12,5 +12,7 @@ data class Event(
     val id: Int = 0,
     val name: String,
     val date: Date,
-    val url: String
+    val url: String,
+    val count: Int = 0,
+    val usable_count: Int= 0
 )

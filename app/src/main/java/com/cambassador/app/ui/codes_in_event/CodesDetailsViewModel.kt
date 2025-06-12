@@ -1,5 +1,7 @@
 package com.cambassador.app.ui.codes_in_event
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -59,7 +61,15 @@ class CodesDetailsViewModel(
         if (data != null){
             viewModelScope.launch {
                 codesRepository.updateCode(data)
+                _saveSuccess.value = true
             }
         }
+    }
+
+    private val _saveSuccess = MutableLiveData<Boolean>()
+    val saveSuccess: LiveData<Boolean> get() = _saveSuccess
+
+    fun resetSaveSuccess(){
+        _saveSuccess.value = false
     }
 }

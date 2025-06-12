@@ -2,6 +2,7 @@ package com.cambassador.app.ui.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.cambassador.app.data.Event
 import com.cambassador.app.data.EventAndCodes
 import com.cambassador.app.data.EventsRepository
 import kotlinx.coroutines.flow.SharingStarted
@@ -13,7 +14,7 @@ class HomeViewModel(
     private val eventsRepository: EventsRepository,
 ) : ViewModel() {
     val homeUiState: StateFlow<HomeUiState> =
-        eventsRepository.getAllEventsStream().map { HomeUiState(it) }
+        eventsRepository.getAllEventsWithCodeCountStream().map { HomeUiState(it) }
             .stateIn(
                 scope = viewModelScope,
                 started = SharingStarted.WhileSubscribed(TIMEOUT_MILLIS),
@@ -25,4 +26,4 @@ class HomeViewModel(
     }
 }
 
-data class HomeUiState(val eventList: List<EventAndCodes> = listOf())
+data class HomeUiState(val eventList: List<Event> = listOf())

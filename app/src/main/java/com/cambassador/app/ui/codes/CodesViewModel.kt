@@ -78,7 +78,7 @@ class CodesViewModel(
 
 data class CodesUiState(
     val codesDetails: CodesDetails = CodesDetails(id = 0,code = "", eventId = 0, used = false, usable = true, userName = ""),
-    val codes: Code? =  Code(id = 0, eventId = 0,code = "", usable = true, used = false, userName = "")
+    val codes: Code? =  Code(id = 0,number = 0, eventId = 0,code = "", usable = true, used = false, userName = "")
 )
 
 data class UsersUiState(
@@ -88,6 +88,7 @@ data class UsersUiState(
 data class CodesDetails(
     val id: Int = 0,
     val eventId: Int = 0,
+    val number: Int = 0,
     val code: String= "",
     val used: Boolean = false,
     val usable: Boolean = true,
@@ -124,6 +125,7 @@ fun Code.toCodesUiState() :CodesUiState = CodesUiState(
 fun Code.toCodesDetails() :CodesDetails = CodesDetails(
     id = id,
     eventId = eventId,
+    number = number,
     code = code,
     used = used,
     usable = usable,
@@ -133,6 +135,7 @@ fun Code.toCodesDetails() :CodesDetails = CodesDetails(
 fun CodesDetails.toCode(): Code = Code(
     id = id,
     eventId = eventId,
+    number = number,
     code = code,
     used = used,
     usable = usable,

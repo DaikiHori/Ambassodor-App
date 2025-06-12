@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
@@ -42,7 +41,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.cambassador.app.AmbassadorTopAppBar
 import com.cambassador.app.R
-import com.cambassador.app.data.EventAndCodes
+import com.cambassador.app.data.Event
 import com.cambassador.app.ui.AppViewModelProvider
 import com.cambassador.app.ui.Utility
 import com.cambassador.app.ui.navigation.NavigationDestination
@@ -109,7 +108,7 @@ fun HomeScreen(
 
 @Composable
 private fun HomeBody(
-    eventList: List<EventAndCodes>,
+    eventList: List<Event>,
     navigateToCodes: (Int) -> Unit,
     navigateToEventEdit: (Int) -> Unit,
     navigateToCodesDetails: (Int) -> Unit,
@@ -142,7 +141,7 @@ private fun HomeBody(
 
 @Composable
 private fun EventList(
-    eventList: List<EventAndCodes>,
+    eventList: List<Event>,
     navigateToCodes: (Int) -> Unit,
     navigateToEventEdit: (Int) -> Unit,
     navigateToCodesDetails: (Int) -> Unit,
@@ -153,7 +152,7 @@ private fun EventList(
         modifier = modifier,
         contentPadding = contentPadding
     ) {
-        items(items = eventList, key = { it.event.id }) { event ->
+        items(items = eventList, key = { it.id }) { event ->
             Card(
                 modifier = modifier, elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
             ) {
@@ -166,39 +165,39 @@ private fun EventList(
                     ) {
                         Column(modifier = Modifier.fillMaxWidth(0.7f)) {
                             Text(
-                                text = event.event.name,
+                                text = event.name,
                                 style = MaterialTheme.typography.titleLarge,
                             )
                             Spacer(Modifier.weight(1f))
                             Text(
-                                text = Utility.dateToString(event.event.date),
+                                text = Utility.dateToString(event.date),
                                 style = MaterialTheme.typography.titleMedium
                             )
                         }
                         Spacer(Modifier.weight(1f))
                         Text(
-                            text = event.codes.count{ !it.used && it.usable }.toString() + "/" + event.codes.count().toString(),
+                            text = event.usable_count.toString() + "/" + event.count.toString(),
                             style = MaterialTheme.typography.titleMedium
                         )
                     }
                     Spacer(Modifier.weight(1f))
                     Row {
                         Button(
-                            onClick = { navigateToEventEdit(event.event.id) },
+                            onClick = { navigateToEventEdit(event.id) },
                             shape = MaterialTheme.shapes.small
                         ) {
                             Text(text = stringResource(R.string.edit_action))
                         }
                         Spacer(Modifier.weight(1f))
                         Button(
-                            onClick = { navigateToCodesDetails(event.event.id) },
+                            onClick = { navigateToCodesDetails(event.id) },
                             shape = MaterialTheme.shapes.small
                         ) {
                             Text(text = stringResource(R.string.list))
                         }
                         Spacer(Modifier.weight(1f))
                         Button(
-                            onClick = { navigateToCodes(event.event.id) },
+                            onClick = { navigateToCodes(event.id) },
                             shape = MaterialTheme.shapes.small
                         ) {
                             Text(text = stringResource(R.string.code))

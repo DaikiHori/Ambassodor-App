@@ -34,10 +34,12 @@ class EventEntryViewModel(
                     .replace("\r",",").replace("\n",",")
                     .split(",")
                 val id = eventId.toInt()
+                var num = 1
                 for (c in codes) {
                     if(c.isNotEmpty()) {
-                        val code = Code(eventId = id, code = c)
+                        val code = Code(eventId = id,number = num, code = c)
                         codesRepository.insertCode(code)
+                        num++
                     }
                 }
             }catch (e: Throwable){
@@ -76,7 +78,7 @@ fun EventDetails.toEvent(): Event = Event(
 
 fun EventDetails.toCodes(): Code = Code(
     eventId = id,
-    code = code
+    code = code,
 )
 
 fun EventDetails.toEventAndCodes(): EventAndCodes = EventAndCodes(

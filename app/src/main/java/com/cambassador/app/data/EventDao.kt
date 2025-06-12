@@ -17,10 +17,11 @@ interface EventDao {
     fun getAllEvents(): Flow<List<EventAndCodes>>
 
     @Transaction
-    @Query("SELECT e.*, COUNT(c.id) AS count FROM events e " +
+    @Query("SELECT e.*, COUNT(c.id) AS count,COUNT(CASE WHEN usable = 1 AND used = 0 THEN c.id END) as usable_count " +
+            "FROM events e " +
             "LEFT JOIN codes c ON e.id = c.eventId " +
             "GROUP BY e.id")
-    fun getAllEventsWithCount(): Flow<List<EventAndCodes>>
+    fun getAllEventsWithCodeCount(): Flow<List<Event>>
 
     @Transaction
     @Query("SELECT * from events WHERE id = :id")

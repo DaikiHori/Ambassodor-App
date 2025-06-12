@@ -6,7 +6,7 @@ class OfflineEventsRepository(private val eventDao: EventDao) : EventsRepository
 
     override fun getAllEventsStream(): Flow<List<EventAndCodes>> = eventDao.getAllEvents()
 
-    override fun getAllEventsWithCountStream(): Flow<List<EventAndCodes>> = eventDao.getAllEventsWithCount()
+    override fun getAllEventsWithCodeCountStream(): Flow<List<Event>> = eventDao.getAllEventsWithCodeCount()
 
     override fun getEventStream(id: Int): Flow<EventAndCodes?> = eventDao.getEvent(id)
 

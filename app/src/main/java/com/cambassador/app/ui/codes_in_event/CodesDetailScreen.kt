@@ -1,5 +1,6 @@
 package com.cambassador.app.ui.codes_in_event
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -31,10 +32,12 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -96,6 +99,11 @@ fun CodesBody(
     modifier: Modifier,
     contentPadding: PaddingValues = PaddingValues(0.dp)
 ){
+    val saveSuccess by viewModel.saveSuccess.observeAsState(initial = false)
+    if (saveSuccess) {
+        Toast.makeText(LocalContext.current, R.string.saved, Toast.LENGTH_SHORT).show()
+        viewModel.resetSaveSuccess() // 状態をリセット
+    }
     Column(modifier = Modifier.padding(contentPadding)) {
         Text(
             text = event.name, modifier = Modifier
@@ -120,7 +128,7 @@ fun CodesBody(
                         ) {
                             Column() {
                                 Row {
-                                    Text(text = "$listIndex: ")
+                                    Text(text = code.number.toString() + ":")
                                     SelectionContainer {
                                         Text(text = code.code)
                                     }

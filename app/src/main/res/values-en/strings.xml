@@ -35,4 +35,6 @@
     <string name="used_false">Unused</string>
 
     <string name="users_empty">No users in Database.\nTap + to add.</string>
+    <string name="saved">Saved.</string>
+
 </resources>

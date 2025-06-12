@@ -173,7 +173,7 @@ private fun CodesBody(
                             Spacer(modifier = Modifier.height(1.dp))
                         }
                         item {
-                            Text(codesUiState.codesDetails.code, modifier = Modifier.padding(10.dp))
+                            Text(text=codesUiState.codesDetails.number.toString() + ":" + codesUiState.codesDetails.code, modifier = Modifier.padding(10.dp))
                         }
                         item {
                             Row {
