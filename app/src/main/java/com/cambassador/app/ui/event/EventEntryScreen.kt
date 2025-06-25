@@ -34,6 +34,7 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import com.cambassador.app.AmbassadorTopAppBar
 import com.cambassador.app.R
 import com.cambassador.app.ui.Utility
@@ -53,7 +54,8 @@ fun EventEntryScreen(
     navigateBack: () -> Unit,
     onNavigateUp: () -> Unit,
     canNavigateBack: Boolean = true,
-    viewModel: EventEntryViewModel = viewModel(factory = AppViewModelProvider1.Factory)
+    viewModel: EventEntryViewModel = viewModel(factory = AppViewModelProvider1.Factory),
+    navController: NavController
 ) {
     val coroutineScope = rememberCoroutineScope()
     Scaffold(
@@ -62,7 +64,7 @@ fun EventEntryScreen(
                 title = stringResource(EventEntryDestination.titleRes),
                 canNavigateBack = canNavigateBack,
                 navigateUp = onNavigateUp,
-                navigateToUser = {}
+                navController = navController
             )
         }
     ) { innerPadding ->
@@ -102,7 +104,6 @@ fun EventEntryBody(
     ) {
         val eventDetails = eventUiState.eventDetails
         val onValueChange = onEventValueChange
-        val modifier = Modifier.fillMaxWidth()
         var isCalendarVisible by remember { mutableStateOf(false) }
         var selectedDate by remember { mutableStateOf(Date()) }
         Column(

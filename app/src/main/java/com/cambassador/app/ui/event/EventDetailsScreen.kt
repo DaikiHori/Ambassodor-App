@@ -40,6 +40,7 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import com.cambassador.app.AmbassadorTopAppBar
 import com.cambassador.app.R
 import com.cambassador.app.data.EventAndCodes
@@ -57,11 +58,11 @@ object EventDetailsDestination : NavigationDestination {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EventDetailsScreen(
-    navigateToCodes: (Int) -> Unit,
     navigateToEditEvent: (Int) -> Unit,
     navigateBack: () -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: EventDetailsViewModel = viewModel(factory = AppViewModelProvider.Factory)
+    viewModel: EventDetailsViewModel = viewModel(factory = AppViewModelProvider.Factory),
+    navController: NavController
 ) {
     val uiState = viewModel.uiState.collectAsState()
     val coroutineScope = rememberCoroutineScope()
@@ -71,7 +72,7 @@ fun EventDetailsScreen(
                 title = stringResource(EventDetailsDestination.titleRes),
                 canNavigateBack = true,
                 navigateUp = navigateBack,
-                navigateToUser = {}
+                navController = navController
             )
         },
         floatingActionButton = {

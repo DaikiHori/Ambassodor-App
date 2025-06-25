@@ -1,11 +1,5 @@
 package com.cambassador.app.ui.codes
 
-import android.graphics.Rect
-import android.view.View
-import android.view.ViewTreeObserver
-import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.animation.core.tween
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -13,34 +7,22 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.calculateEndPadding
-import androidx.compose.foundation.layout.calculateStartPadding
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material3.Button
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -51,27 +33,21 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.viewinterop.AndroidView
-import androidx.compose.ui.zIndex
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import com.cambassador.app.AmbassadorTopAppBar
 import com.cambassador.app.R
-import com.cambassador.app.data.User
 import com.cambassador.app.ui.AppViewModelProvider
 import com.cambassador.app.ui.Utility
 import com.cambassador.app.ui.navigation.NavigationDestination
 import com.cambassador.app.ui.users.UsersViewModel
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import androidx.navigation.NavController
 
 object CodesDestination : NavigationDestination {
     override val route = "codes"
@@ -89,7 +65,8 @@ fun CodesScreen(
     codesViewModel: CodesViewModel = viewModel(factory = AppViewModelProvider.Factory),
     usersViewModel: UsersViewModel = viewModel(factory = AppViewModelProvider.Factory),
     menu: String = "code",
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    navController: NavController
 ){
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
     Scaffold(
@@ -101,8 +78,8 @@ fun CodesScreen(
                 navigateUp = onNavigateUp,
                 scrollBehavior = scrollBehavior,
                 menu = menu,
-                navigateToUser = {},
-                url = codesViewModel.eventUiState.eventDetails.url
+                url = codesViewModel.eventUiState.eventDetails.url,
+                navController = navController
            )
         }
     ) { innerPadding ->
@@ -113,7 +90,8 @@ fun CodesScreen(
                 codesViewModel = codesViewModel,
                 modifier = modifier,
                 contentPadding = innerPadding,
-                onSaveEnd= onSaveEnd
+                onSaveEnd= onSaveEnd,
+                navController = navController
             )
     }
 }
@@ -126,7 +104,8 @@ private fun CodesBody(
     codesViewModel: CodesViewModel,
     modifier: Modifier = Modifier,
     contentPadding : PaddingValues = PaddingValues(0.dp),
-    onSaveEnd: (Int) -> Unit
+    onSaveEnd: (Int) -> Unit,
+    navController: NavController
 ) {
     val keyboardController = LocalSoftwareKeyboardController.current
     var isExpanded by remember { mutableStateOf(false) }

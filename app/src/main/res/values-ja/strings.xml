@@ -38,4 +38,12 @@
     <string name="users_empty">ユーザーがいません。\n+ をタップして追加して下さい。</string>
     <string name="saved">保存しました。</string>
 
+    <string name="menu">メニュー</string>
+    <string name="export">エクスポート</string>
+    <string name="import_csv">インポート</string>
+    <string name="export_complete">CSVをエクスポートしました</string>
+    <string name="import_complete">CSVをインポートしました</string>
+    <string name="export_failed">CSVのエクスポートに失敗しました</string>
+    <string name="import_failed">CSVのインポートに失敗しました</string>
+    <string name="warning_clear">すべてのデータを削除してインポートします。よろしいですか？</string>
 </resources>

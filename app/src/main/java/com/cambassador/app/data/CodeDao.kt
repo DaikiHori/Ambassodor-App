@@ -31,4 +31,7 @@ interface CodeDao {
 
     @Delete
     suspend fun delete(code: Code)
+
+    @Query("DELETE FROM codes") // 全削除メソッドを追加
+    suspend fun deleteAll()
 }

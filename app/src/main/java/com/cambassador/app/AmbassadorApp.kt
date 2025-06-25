@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.Icons.Filled
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Menu
@@ -33,10 +34,9 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
-import com.cambassador.app.R.string
 import com.cambassador.app.ui.Utility
 import com.cambassador.app.ui.navigation.AmbassadorNavHost
-import com.google.rpc.Help
+import androidx.navigation.NavController
 
 @Composable
 fun AmbassadorApp(navController: NavHostController = rememberNavController()) {
@@ -51,7 +51,7 @@ fun AmbassadorTopAppBar(
     modifier: Modifier = Modifier,
     scrollBehavior: TopAppBarScrollBehavior? = null,
     navigateUp: () -> Unit,
-    navigateToUser: () -> Unit,
+    navController: NavController,
     menu: String = "",
     url: String = ""
 ) {
@@ -64,8 +64,8 @@ fun AmbassadorTopAppBar(
             if (canNavigateBack) {
                 IconButton(onClick = navigateUp) {
                     Icon(
-                        imageVector = Filled.ArrowBack,
-                        contentDescription = stringResource(string.back_button)
+                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                        contentDescription = stringResource(R.string.back_button)
                     )
                 }
             }
@@ -83,10 +83,14 @@ fun AmbassadorTopAppBar(
     if(onClickInfo && url.isNotBlank()){
         QrCodeDialog(onDismissRequest = { onClickInfo = false }, url = url)
     }else if(onClickInfo && menu == "home"){
-        MenuLinkDialog(
-            onDismissRequest = { onClickInfo = false },
-            onLinkClick = { navigateToUser() }
-        )
+        Button(
+            onClick = {
+                navController.navigate("menu_screen")
+            },
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text(stringResource(R.string.menu))
+        }
     }
 }
 
@@ -154,41 +158,5 @@ fun QrCodeDialog(
                 Text("OK")
             }
         }
-    )
-}
-
-@Composable
-fun MenuLinkDialog(
-    onDismissRequest: () -> Unit,
-    onLinkClick: (String) -> Unit
-){
-    AlertDialog(
-        onDismissRequest = onDismissRequest,
-        title = {
-            Text("Menu")
-        },
-        text = {
-            Column(
-                modifier = Modifier.fillMaxWidth(),
-                verticalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
-                Text(
-                    text = stringResource(R.string.user_name),
-                    color = Color.Blue,
-                    modifier = Modifier.clickable { onLinkClick("user") }
-                )
-            }
-        },
-        confirmButton = {
-            Button(
-                onClick = onDismissRequest
-            ) {
-                Text("Close")
-            }
-        },
-        modifier = Modifier
-            .clickable {
-                onDismissRequest()
-            }
     )
 }

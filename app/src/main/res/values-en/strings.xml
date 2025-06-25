@@ -37,4 +37,12 @@
     <string name="users_empty">No users in Database.\nTap + to add.</string>
     <string name="saved">Saved.</string>
 
+    <string name="menu">menu</string>
+    <string name="export">export</string>
+    <string name="import_csv">import</string>
+    <string name="export_complete">CSV export completed</string>
+    <string name="import_complete">CSV import completed</string>
+    <string name="export_failed">CSV export failed</string>
+    <string name="import_failed">CSV import failed</string>
+    <string name="warning_clear">Delete all data and import. Are you sure?</string>
 </resources>

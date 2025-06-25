@@ -15,20 +15,12 @@ import com.cambassador.app.ui.event.EventDetails
 import com.cambassador.app.ui.event.EventDetailsDestination
 import com.cambassador.app.ui.event.EventUiState
 import com.cambassador.app.ui.event.toEventUiState
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharedFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.toList
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.util.Date
-import android.util.Log
 import com.cambassador.app.data.Event
-import kotlinx.coroutines.flow.map
 
 class CodesViewModel(
     savedStateHandle: SavedStateHandle,
@@ -81,10 +73,6 @@ data class CodesUiState(
     val codes: Code? =  Code(id = 0,number = 0, eventId = 0,code = "", usable = true, used = false, userName = "")
 )
 
-data class UsersUiState(
-    val usersDetails: UsersDetails = UsersDetails(id = 0, name = "")
-)
-
 data class CodesDetails(
     val id: Int = 0,
     val eventId: Int = 0,
@@ -95,27 +83,9 @@ data class CodesDetails(
     val userName: String = ""
 )
 
-data class EventDetails(
-    val id: Int = 0,
-    val name: String = "",
-    val date: Date = Date(),
-    val url: String = ""
-)
-
 data class UsersDetails(
     val id: Int = 0,
     val name: String = ""
-)
-
-fun Event.toEventUiState() :EventUiState = EventUiState(
-    eventDetails = this.toEventDetails()
-)
-
-fun Event.toEventDetails() :EventDetails = EventDetails(
-    id = id,
-    name = name,
-    date = date,
-    url = url
 )
 
 fun Code.toCodesUiState() :CodesUiState = CodesUiState(
@@ -140,14 +110,4 @@ fun CodesDetails.toCode(): Code = Code(
     used = used,
     usable = usable,
     userName = userName
-)
-
-fun User.toUsersDetails(): UsersDetails = UsersDetails(
-    id = id,
-    name = name
-)
-
-fun UsersDetails.toUser(): User = User(
-    id = id,
-    name = name
 )

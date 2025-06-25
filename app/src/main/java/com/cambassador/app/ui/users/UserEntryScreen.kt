@@ -22,6 +22,7 @@ import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import com.cambassador.app.AmbassadorTopAppBar
 import com.cambassador.app.R
 import com.cambassador.app.ui.AppViewModelProvider
@@ -39,7 +40,8 @@ fun UserEntryScreen(
     navigateBack: () -> Unit,
     onNavigateUp: () -> Unit,
     canNavigateBack: Boolean = true,
-    viewModel: UserEntryViewModel = viewModel(factory = AppViewModelProvider.Factory)
+    viewModel: UserEntryViewModel = viewModel(factory = AppViewModelProvider.Factory),
+    navController: NavController
 ){
     val coroutineScope = rememberCoroutineScope()
     Scaffold(
@@ -48,7 +50,7 @@ fun UserEntryScreen(
                 title = stringResource(UserEntryDestination.titleRes),
                 canNavigateBack = canNavigateBack,
                 navigateUp = onNavigateUp,
-                navigateToUser = {}
+                navController = navController
             )
         }
     ) { innerPadding ->
@@ -79,7 +81,7 @@ fun UserEntryBody(
     onUserValueChange: (UserDetails) -> Unit,
     onSaveClick: () -> Unit,
     enabled: Boolean = true,
-    modifier: Modifier = Modifier
+    modifier: Modifier
 ) {
     val userDetails = userUiState.userDetails
     val onValueChange = onUserValueChange

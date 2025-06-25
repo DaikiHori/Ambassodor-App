@@ -41,6 +41,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import com.cambassador.app.AmbassadorTopAppBar
 import com.cambassador.app.R
 import com.cambassador.app.ui.AppViewModelProvider
@@ -62,7 +63,8 @@ fun EventEditScreen(
     navigateBack: () -> Unit,
     onNavigateUp: () -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: EventEditViewModel = viewModel(factory = AppViewModelProvider.Factory)
+    viewModel: EventEditViewModel = viewModel(factory = AppViewModelProvider.Factory),
+    navController: NavController
 ) {
     val coroutineScope = rememberCoroutineScope()
     Scaffold(
@@ -71,7 +73,7 @@ fun EventEditScreen(
                 title = stringResource(EventEditDestination.titleRes),
                 canNavigateBack = true,
                 navigateUp = onNavigateUp,
-                navigateToUser = {}
+                navController = navController
             )
         },
         modifier = modifier

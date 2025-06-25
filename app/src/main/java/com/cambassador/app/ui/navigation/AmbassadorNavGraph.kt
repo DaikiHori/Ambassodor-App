@@ -19,7 +19,8 @@ import com.cambassador.app.ui.event.EventEditDestination
 import com.cambassador.app.ui.event.EventEditScreen
 import com.cambassador.app.ui.event.EventEntryDestination
 import com.cambassador.app.ui.event.EventEntryScreen
-import com.cambassador.app.ui.users.UserDetails
+import com.cambassador.app.ui.menu.MenuScreen
+import com.cambassador.app.ui.menu.MenuScreenDestination
 import com.cambassador.app.ui.users.UserEntryDestination
 import com.cambassador.app.ui.users.UserEntryScreen
 import com.cambassador.app.ui.users.UsersDestination
@@ -46,15 +47,16 @@ fun AmbassadorNavHost(
                 navigateToEventEdit = { navController.navigate("${EventEditDestination.route}/$it")},
                 navigateToCodes = { navController.navigate("${CodesDestination.route}/$it")},
                 navigateToCodesDetails = { navController.navigate("${CodesDetailsDestination.route}/$it")},
-                navigateToUsers = { navController.navigate(UsersDestination.route) },
-                onNavigateBack = { navController.popBackStack(HomeDestination.route,inclusive = false) }
+                onNavigateBack = { navController.popBackStack(HomeDestination.route,inclusive = false) },
+                navController = navController
             )
         }
 
         composable(route = EventEntryDestination.route) {
             EventEntryScreen(
                 navigateBack = { navController.popBackStack() },
-                onNavigateUp = { navController.navigateUp() }
+                onNavigateUp = { navController.navigateUp() },
+                navController = navController
             )
         }
 
@@ -65,9 +67,9 @@ fun AmbassadorNavHost(
             })
         ) {
             EventDetailsScreen(
-                navigateToCodes = { navController.navigate("${CodesDestination.routeWithArgs}/$it") },
                 navigateToEditEvent = { navController.navigate("${EventEditDestination.route}/$it") },
-                navigateBack = { navController.navigateUp() }
+                navigateBack = { navController.navigateUp() },
+                navController = navController
             )
         }
 
@@ -79,7 +81,9 @@ fun AmbassadorNavHost(
         ) {
             EventEditScreen(
                 navigateBack = { navController.popBackStack() },
-                onNavigateUp = { navController.navigateUp() }
+                onNavigateUp = { navController.navigateUp() },
+                navController = navController,
+                modifier = modifier
             )
         }
 
@@ -92,7 +96,8 @@ fun AmbassadorNavHost(
             CodesScreen(
                 navigateBack = { navController.popBackStack(HomeDestination.route,inclusive = false) },
                 onNavigateUp = { navController.popBackStack(HomeDestination.route,inclusive = false) },
-                onSaveEnd =  { navController.navigate("${CodesDestination.route}/$it")}
+                onSaveEnd =  { navController.navigate("${CodesDestination.route}/$it")},
+                navController = navController
             )
         }
 
@@ -104,7 +109,8 @@ fun AmbassadorNavHost(
         ) {
             CodesDetailsScreen(
                 navigateBack = { navController.popBackStack(HomeDestination.route,inclusive = false) },
-                onNavigateUp = { navController.popBackStack(HomeDestination.route,inclusive = false) }
+                onNavigateUp = { navController.popBackStack(HomeDestination.route,inclusive = false) },
+                navController = navController
             )
         }
 
@@ -112,15 +118,26 @@ fun AmbassadorNavHost(
             UsersScreen(
                 navigateToUserEntry = { navController.navigate(UserEntryDestination.route) },
                 onNavigateUp = { navController.navigateUp() },
-                onNavigateBack = { navController.popBackStack() }
+                navController = navController
             )
         }
 
         composable(route = UserEntryDestination.route){
             UserEntryScreen(
                 navigateBack = { navController.navigateUp() },
-                onNavigateUp = { navController.popBackStack() }
+                onNavigateUp = { navController.popBackStack() },
+                navController = navController
             )
         }
+
+
+        composable(route = MenuScreenDestination.route){
+            MenuScreen(
+                navigateToUsers = { navController.navigate(UsersDestination.route) },
+                onNavigateUp = { navController.navigateUp() },
+                navController = navController
+            )
+        }
+
     }
 }

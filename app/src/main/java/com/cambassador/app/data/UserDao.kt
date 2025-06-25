@@ -28,4 +28,7 @@ interface UserDao {
 
     @Delete
     suspend fun delete(user: User)
+
+    @Query("DELETE FROM users") // 全削除メソッドを追加
+    suspend fun deleteAll()
 }

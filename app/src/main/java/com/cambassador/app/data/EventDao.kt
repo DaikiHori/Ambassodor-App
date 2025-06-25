@@ -35,4 +35,7 @@ interface EventDao {
 
     @Delete
     suspend fun delete(event: Event)
+
+    @Query("DELETE FROM events") // 全削除メソッドを追加
+    suspend fun deleteAll()
 }

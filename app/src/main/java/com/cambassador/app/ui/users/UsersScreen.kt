@@ -36,6 +36,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import com.cambassador.app.AmbassadorTopAppBar
 import com.cambassador.app.R
 import com.cambassador.app.ui.AppViewModelProvider
@@ -53,11 +54,10 @@ fun UsersScreen(
     navigateToUserEntry: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: UsersViewModel = viewModel(factory = AppViewModelProvider.Factory),
-    onNavigateBack: () -> Unit,
     onNavigateUp: () -> Unit,
-    menu: String = "user"
+    menu: String = "user",
+    navController: NavController
 ){
-    val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
     val users by viewModel.displayUsers.collectAsState()
     Scaffold(
         topBar = {
@@ -66,7 +66,7 @@ fun UsersScreen(
                 canNavigateBack = true,
                 navigateUp = onNavigateUp,
                 menu = menu,
-                navigateToUser = {}
+                navController = navController
             )
         },
         floatingActionButton = {
@@ -88,7 +88,6 @@ fun UsersScreen(
     ){ innerPadding ->
             UsersBody(
                 userList = users,
-                viewModel = viewModel,
                 modifier = modifier.fillMaxSize(),
                 contentPadding = innerPadding
             )
@@ -98,7 +97,6 @@ fun UsersScreen(
 @Composable
 fun UsersBody(
     userList: List<User>?,
-    viewModel: UsersViewModel,
     modifier: Modifier,
     contentPadding: PaddingValues = PaddingValues(0.dp)
 ){
