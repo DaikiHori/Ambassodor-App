@@ -19,14 +19,6 @@ class CsvExporter(private val database: AmbassadorDatabase) {
         withContext(Dispatchers.IO) {
             context.contentResolver.openOutputStream(uri)?.use { outputStream ->
                 OutputStreamWriter(outputStream).use { writer ->
-                    // Codesテーブルのエクスポート
-                    val codes = database.codeDao().getAllCodes().first()
-                    exportTableToCsv(writer, "codes", codes) { code ->
-                        // idを含む全てのフィールドをCSV行に生成
-                        "${code.id},${code.number},${code.eventId},${escapeCsv(code.code)},${code.usable},${code.used},${escapeCsv(code.userName)}"
-                    }
-                    writer.append("\n\n") // 各テーブル間に空行を追加して区切りを明確に
-
                     // Eventsテーブルのエクスポート
                     val events = database.eventDao().getAllEvents().first()
                     exportTableToCsv(writer, "events", events) { event ->
@@ -34,6 +26,14 @@ class CsvExporter(private val database: AmbassadorDatabase) {
                         "${event.event.id},${escapeCsv(event.event.name)},${dateFormatter.format(event.event.date)},${escapeCsv(event.event.url)},${event.event.count},${event.event.usable_count}"
                     }
                     writer.append("\n\n")
+
+                    // Codesテーブルのエクスポート
+                    val codes = database.codeDao().getAllCodes().first()
+                    exportTableToCsv(writer, "codes", codes) { code ->
+                        // idを含む全てのフィールドをCSV行に生成
+                        "${code.id},${code.number},${code.eventId},${escapeCsv(code.code)},${code.usable},${code.used},${escapeCsv(code.userName)}"
+                    }
+                    writer.append("\n\n") // 各テーブル間に空行を追加して区切りを明確に
 
                     // Usersテーブルのエクスポート
                     val users = database.userDao().getAllUsers().first()
